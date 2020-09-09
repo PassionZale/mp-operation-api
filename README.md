@@ -1,29 +1,37 @@
 # api
 
-## CONFIG
+## 初始化
+
+```bash
+cp .env.sample .env
+```
+
+## 依赖说明
+
+### CONFIG
 ```bash
 npm install --save @nestjs/config @hapi/joi
 npm install --save-dev @types/hapi__joi
 ```
 
-## DATABASE
+### DATABASE
 ```bash
 npm install --save @nestjs/sequelize sequelize sequelize-typescript mysql2
 npm install --save-dev @types/sequelize
 ```
 
-## AUTH
+### AUTH
 ```bash
 npm install --save @nestjs/passport @nestjs/jwt passport passport-jwt bcryptjs
 npm install --save-dev @types/passport-jwt @types/jsonwebtoken @types/bcryptjs
 ```
 
-## VALIDATE
+### VALIDATE
 ```bash
 npm install --save class-transformer class-validator
 ```
 
-## HELP
+### HELP
 ```bash
 npm install --save moment
 ```
