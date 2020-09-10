@@ -10,6 +10,7 @@ import { DatabaseModule } from './database/database.module';
 
 // MODULE
 import { UserModule } from './module/user/user.module';
+import { AuthModule } from './module/auth/auth.module';
 
 @Module({
   imports: [
@@ -19,7 +20,8 @@ import { UserModule } from './module/user/user.module';
 
     DatabaseModule,
 
-    UserModule
+    UserModule,
+    AuthModule
   ],
   controllers: [],
   providers: [],
