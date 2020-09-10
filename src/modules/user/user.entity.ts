@@ -1,77 +1,70 @@
-import {
-  Table,
-  Model,
-  PrimaryKey,
-  AutoIncrement,
-  Column,
-  DataType,
-  AllowNull,
-  Length,
-  Unique,
-  Default,
-  CreatedAt,
-  UpdatedAt
-} from 'sequelize-typescript';
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { DateValueTransformer } from '@src/database/database.transformer';
+import { UserRole } from '@src/common/enum/user-role.enum';
+import { UserSex } from '@src/common/enum/user-sex.enum';
+import { UserStatus } from '@src/common/enum/user-status.enum';
 
-import { Roles } from '@src/common/enums/roles.enum';
-import { UserSex } from '@src/common/enums/user-sex.enum';
-import { UserStatus } from '@src/common/enums/user-status.enum';
-
-@Table({ tableName: 'user' })
-export class UserEntity extends Model<UserEntity> {
-  @PrimaryKey
-  @AutoIncrement
-  @Column(DataType.BIGINT)
+@Entity('user')
+export class UserEntity {
+  @PrimaryGeneratedColumn()
   id: number;
 
-  @AllowNull
-  @Column
+  // 头像
+  @Column('varchar', { nullable: true })
   avatar: string;
 
-  @Length({ max: 20 })
-  @AllowNull
-  @Column
+  // 昵称：花名
+  @Column('varchar', { length: 20, nullable: true })
   nickname: string;
 
-  @Length({ max: 20 })
-  @Column
+  // 姓名：真实姓名
+  @Column('varchar', { length: 20 })
   fullname: string;
 
-  @Unique
-  @Column(DataType.INTEGER)
+  // 工号：用户名
+  @Column('int', { unique: true })
   job_number: number;
 
-  @Default(Roles.STAFF)
-  @Column
-  role: Roles;
+  // 角色
+  @Column('int', { default: UserRole.STAFF })
+  role: UserRole;
 
-  @Column
+  // 密码
+  @Column({ select: false })
   hashed_password: string;
 
-  @Default(UserSex.NONE)
-  @Column(DataType.ENUM(UserSex.MALE, UserSex.FEMAL, UserSex.NONE))
+  // 性别
+  @Column('enum', {
+    enum: [UserSex.MALE, UserSex.FEMAL, UserSex.NONE],
+    default: UserSex.NONE,
+  })
   sex: UserSex;
 
-  @Default(UserStatus.INACTIVATED)
-  @Column(
-    DataType.ENUM(
-      UserStatus.NORMAL,
-      UserStatus.FORZEN,
-      UserStatus.INACTIVATED,
-      UserStatus.LOSED,
-    ),
-  )
+  // 状态
+  @Column('enum', {
+    enum: [UserStatus.NORMAL, UserStatus.FORZEN, UserStatus.INACTIVATED, UserStatus.LOSED],
+    default: UserStatus.INACTIVATED,
+  })
   status: UserStatus;
 
-  @CreatedAt
-  @Column
+  // 创建时间
+  @Column('datetime', {
+    default: () => 'CURRENT_TIMESTAMP',
+    transformer: new DateValueTransformer(),
+  })
   created_at: Date;
 
-  @UpdatedAt
-  @Column
+  // 更新时间
+  @Column('datetime', {
+    default: () => 'CURRENT_TIMESTAMP',
+    transformer: new DateValueTransformer(),
+  })
   updated_at: Date;
 
-  @AllowNull
-  @Column(DataType.DATE)
+  // 登录时间
+  @Column('datetime', {
+    nullable: true,
+    transformer: new DateValueTransformer(),
+  })
   login_at: Date;
 }

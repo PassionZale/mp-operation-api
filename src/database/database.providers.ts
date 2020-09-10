@@ -1,39 +1,17 @@
-import { Sequelize } from 'sequelize-typescript';
-import { Dialect } from 'sequelize/types';
+import { createConnection, Connection, ConnectionOptions } from 'typeorm';
+import { DATABASE_CONNECTION } from '@src/common/constant/provide.constant';
+import { TypeormConfigService } from '@src/config/typeorm/config.service';
 
-import { SEQUELIZE } from '@src/common/constants/provides';
-import { DatabaseConfigService } from '@src/configs/database/config.service';
-import { AppConfigService } from '@src/configs/app/config.service';
-
-
-export const DatabaseProviders = [
+export const databaseProviders = [
   {
-    provide: SEQUELIZE,
+    provide: DATABASE_CONNECTION,
     useFactory: async (
-      databaseConfigService: DatabaseConfigService,
-      appConfigService: AppConfigService,
-    ): Promise<Sequelize> => {
-      const sequelize = new Sequelize(
-        databaseConfigService.database,
-        databaseConfigService.username,
-        databaseConfigService.password,
-        {
-          host: databaseConfigService.host,
-          port: databaseConfigService.port,
-          username: databaseConfigService.username,
-          password: databaseConfigService.password,
-          database: databaseConfigService.database,
-          dialect: databaseConfigService.dialect as Dialect,
-          logging: console.log,
-        },
-      );
+      typeormConfigService: TypeormConfigService,
+    ): Promise<Connection> => {
+      const configs = typeormConfigService.configs as ConnectionOptions;
 
-      sequelize.addModels([__dirname + '../modules/**/*.entity.ts']);
-
-      await sequelize.sync({ force: appConfigService.env === 'development' });
-
-      return sequelize;
+      return await createConnection({ ...configs });
     },
-    inject: [DatabaseConfigService, AppConfigService],
+    inject: [TypeormConfigService],
   },
 ];

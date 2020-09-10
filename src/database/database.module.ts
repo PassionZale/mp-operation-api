@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common';
-import { DatabaseProviders } from './database.providers';
-import { AppConfigModule } from '@src/configs/app/config.module';
-import { DatabaseConfigModule } from '@src/configs/database/config.module';
+import { databaseProviders } from './database.providers';
+import { TypeormConfigModule } from '@src/config/typeorm/config.module';
 
 @Module({
-  imports: [AppConfigModule, DatabaseConfigModule],
-  providers: [...DatabaseProviders],
-  exports: [...DatabaseProviders],
+  imports: [TypeormConfigModule],
+  providers: [...databaseProviders],
+  exports: [...databaseProviders],
 })
 export class DatabaseModule {}

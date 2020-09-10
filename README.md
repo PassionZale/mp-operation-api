@@ -16,8 +16,7 @@ npm install --save-dev @types/hapi__joi
 
 ### DATABASE
 ```bash
-npm install --save @nestjs/sequelize sequelize sequelize-typescript mysql2
-npm install --save-dev @types/sequelize
+npm install --save @nestjs/typeorm typeorm mysql
 ```
 
 ### AUTH
@@ -33,5 +32,5 @@ npm install --save class-transformer class-validator
 
 ### HELP
 ```bash
-npm install --save moment
+npm install --save moment-timezone
 ```
