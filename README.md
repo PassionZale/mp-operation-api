@@ -6,6 +6,11 @@
 cp .env.sample .env
 ```
 
+## 运行
+```bash
+npm run start:dev
+```
+
 ## 依赖说明
 
 ### CONFIG
