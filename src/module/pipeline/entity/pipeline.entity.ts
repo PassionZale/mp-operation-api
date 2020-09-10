@@ -2,8 +2,15 @@ import {
   Entity,
   PrimaryGeneratedColumn,
   Column,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
 } from 'typeorm';
 import { DateValueTransformer } from '@src/database/database.transformer';
+
+import { UserEntity } from '@src/module/user/user.entity';
+import { PipeLineDeployLog } from './pipeline-deploy-log.entity';
+import { PipeLineReleaseLog } from './pipeline-release-log.entity';
 
 type PipeLineType =
   | 'miniProgram'
@@ -50,6 +57,25 @@ type PipeLineCIRobot =
 export class PipeLineEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
+
+  @ManyToOne(
+    () => UserEntity,
+    user => user.pipelines,
+  )
+  @JoinColumn({ name: 'user_id' })
+  user: UserEntity;
+
+  @OneToMany(
+    () => PipeLineDeployLog,
+    pipeline_deploy_log => pipeline_deploy_log.pipeline,
+  )
+  pipeline_deploy_logs: PipeLineDeployLog[];
+
+  @OneToMany(
+    () => PipeLineReleaseLog,
+    pipeline_release_logs => pipeline_release_logs.pipeline,
+  )
+  pipeline_release_logs: PipeLineReleaseLog[];
 
   // 名称
   @Column('varchar', { length: 100 })

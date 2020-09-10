@@ -1,13 +1,20 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import { DateValueTransformer } from '@src/database/database.transformer';
 import { UserRole } from '@src/common/enum/user-role.enum';
 import { UserSex } from '@src/common/enum/user-sex.enum';
 import { UserStatus } from '@src/common/enum/user-status.enum';
+import { PipeLineEntity } from '@src/module/pipeline/entity/pipeline.entity';
 
 @Entity('user')
 export class UserEntity {
   @PrimaryGeneratedColumn()
   id: number;
+
+  @OneToMany(
+    () => PipeLineEntity,
+    pipeline => pipeline.user,
+  )
+  pipelines: PipeLineEntity[];
 
   // 头像
   @Column('varchar', { nullable: true })
@@ -42,7 +49,12 @@ export class UserEntity {
 
   // 状态
   @Column('enum', {
-    enum: [UserStatus.NORMAL, UserStatus.FORZEN, UserStatus.INACTIVATED, UserStatus.LOSED],
+    enum: [
+      UserStatus.NORMAL,
+      UserStatus.FORZEN,
+      UserStatus.INACTIVATED,
+      UserStatus.LOSED,
+    ],
     default: UserStatus.INACTIVATED,
   })
   status: UserStatus;
