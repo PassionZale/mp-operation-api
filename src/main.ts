@@ -1,6 +1,10 @@
 import { NestFactory } from '@nestjs/core';
+import * as moment from 'moment-timezone';
+
 import { AppModule } from './app.module';
-import { AppConfigService } from './configs/app/config.service';
+import { AppConfigService } from './config/app/config.service';
+
+moment.tz.setDefault('Asia/Shanghai');
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);

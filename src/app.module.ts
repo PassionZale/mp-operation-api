@@ -1,17 +1,20 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AppConfigModule } from './configs/app/config.module';
-import { DatabaseConfigModule } from './configs/database/config.module';
-import { JwtConfigModule } from './configs/jwt/config.module';
 
+// CONFIG
+import { AppConfigModule } from './config/app/config.module';
+import { JwtConfigModule } from './config/jwt/config.module';
+import { TypeormConfigModule } from './config/typeorm/config.module';
+
+// DATABASE
 import { DatabaseModule } from './database/database.module';
 
 @Module({
   imports: [
     AppConfigModule,
-    DatabaseConfigModule,
     JwtConfigModule,
+    TypeormConfigModule,
     DatabaseModule,
   ],
   controllers: [AppController],
