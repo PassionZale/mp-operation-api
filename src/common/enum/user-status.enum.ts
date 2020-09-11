@@ -1,8 +1,8 @@
 export enum UserStatus {
   /**
-   * 正常
+   * 活跃
    */
-  NORMAL = 'normal',
+  ACTIVED = 'actived',
   /**
    * 冻结
    */

@@ -50,7 +50,7 @@ export class UserEntity {
   // 状态
   @Column('enum', {
     enum: [
-      UserStatus.NORMAL,
+      UserStatus.ACTIVED,
       UserStatus.FORZEN,
       UserStatus.INACTIVATED,
       UserStatus.LOSED,

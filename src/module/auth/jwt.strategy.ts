@@ -7,6 +7,7 @@ import { IPayload } from './auth.interface';
 import { ApiException } from '@src/filter/api-exception.filter';
 import { ApiErrorCode } from '@src/common/enum/api-error-code.enum';
 import { IUserData } from '../user/user.interface';
+import { UserStatus } from '@src/common/enum/user-status.enum';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -33,18 +34,18 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
 
     const user = await this.authService.validatePayload({ id, job_number });
 
-    if (!user) throw new ApiException('', ApiErrorCode.JWT_PAYLOAD_INVALID);
+    if (!user) throw new ApiException('用户不存在', ApiErrorCode.JWT_PAYLOAD_INVALID);
 
     const { status } = user;
 
-    if (status === 'normal') {
+    if (status === UserStatus.ACTIVED) {
       return user;
     }
 
     let message = '';
 
-    status === 'forzen' && (message = '账户被冻结');
-    status === 'inactivated' && (message = '账户未激活');
+    status === UserStatus.FORZEN && (message = '账户被冻结');
+    status === UserStatus.INACTIVATED && (message = '账户未激活');
 
     throw new ApiException(message, ApiErrorCode.PERMISSION_DENIED);
   }
