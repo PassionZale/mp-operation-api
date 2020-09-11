@@ -1,7 +1,7 @@
 /**
  * 角色集合
  */
-export enum UserRole {
+export const enum UserRole {
   /**
    * 超级管理员
    */

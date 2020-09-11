@@ -1,7 +1,7 @@
 /**
  * API 业务错误编码
  */
-export enum ApiErrorCode {
+export const enum ApiErrorCode {
   /**
    * 默认错误码
    */
