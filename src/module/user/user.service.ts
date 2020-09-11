@@ -5,7 +5,7 @@ import * as moment from 'moment-timezone';
 
 import { UserEntity } from './user.entity';
 import { CreateUserRequestDto } from './dto/request/create-user.request.dto';
-import { encrypt } from '@src/common/util/bcrypt.util';
+import { encrypt } from '@src/common/helper/bcrypt.helper';
 import { ApiException } from '@src/filter/api-exception.filter';
 import { IFindOneCondition, ISelectHashedPassword } from './user.interface';
 

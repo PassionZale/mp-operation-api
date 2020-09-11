@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { UserService } from '@src/module/user/user.service';
-import { verify } from '@src/common/util/bcrypt.util';
+import { verify } from '@src/common/helper/bcrypt.helper';
 import { ITokenData } from './auth.interface';
 import { IUserData, IFindOneCondition } from '../user/user.interface';
 
