@@ -9,8 +9,8 @@ import {
 import { DateValueTransformer } from '@src/database/database.transformer';
 
 import { UserEntity } from '@src/module/user/user.entity';
-import { PipeLineDeployLog } from './pipeline-deploy-log.entity';
-import { PipeLineReleaseLog } from './pipeline-release-log.entity';
+import { PipeLineDeployLogEntity } from './pipeline-deploy-log.entity';
+import { PipeLineReleaseLogEntity } from './pipeline-release-log.entity';
 import { PipeLineTypes, PipeLineCIRobots } from '@src/common/enum/pipeline.enum';
 
 /**
@@ -29,16 +29,16 @@ export class PipeLineEntity {
   user: UserEntity;
 
   @OneToMany(
-    () => PipeLineDeployLog,
+    () => PipeLineDeployLogEntity,
     pipeline_deploy_log => pipeline_deploy_log.pipeline,
   )
-  pipeline_deploy_logs: PipeLineDeployLog[];
+  pipeline_deploy_logs: PipeLineDeployLogEntity[];
 
   @OneToMany(
-    () => PipeLineReleaseLog,
+    () => PipeLineReleaseLogEntity,
     pipeline_release_logs => pipeline_release_logs.pipeline,
   )
-  pipeline_release_logs: PipeLineReleaseLog[];
+  pipeline_release_logs: PipeLineReleaseLogEntity[];
 
   // 名称
   @Column('varchar', { length: 100 })

@@ -1,22 +1,22 @@
 import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn, OneToMany } from 'typeorm';
 import { DateValueTransformer } from '@src/database/database.transformer';
 import { PipeLineEntity } from './pipeline.entity';
-import { PipeLineReleaseLog } from './pipeline-release-log.entity';
+import { PipeLineReleaseLogEntity } from './pipeline-release-log.entity';
 
 /**
  * 流水线部署记录
  * 例如：部署促销分支的测试环境、开发环境等
  */
 @Entity('pipeline_deploy_log')
-export class PipeLineDeployLog {
+export class PipeLineDeployLogEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
   @OneToMany(
-    () => PipeLineReleaseLog,
+    () => PipeLineReleaseLogEntity,
     pipeline_release_log => pipeline_release_log.pipeline_deploy,
   )
-  pipeline_release_logs: PipeLineReleaseLog[];
+  pipeline_release_logs: PipeLineReleaseLogEntity[];
 
   @ManyToOne(
     () => PipeLineEntity,

@@ -11,6 +11,7 @@ import { DatabaseModule } from './database/database.module';
 // MODULE
 import { UserModule } from './module/user/user.module';
 import { AuthModule } from './module/auth/auth.module';
+import { PipeLineModule } from './module/pipeline/pipeline.module';
 
 @Module({
   imports: [
@@ -21,7 +22,8 @@ import { AuthModule } from './module/auth/auth.module';
     DatabaseModule,
 
     UserModule,
-    AuthModule
+    AuthModule,
+    PipeLineModule
   ],
   controllers: [],
   providers: [],

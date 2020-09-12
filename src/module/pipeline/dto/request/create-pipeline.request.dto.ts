@@ -12,7 +12,7 @@ export class CreatePipeLineRequestDto {
 
   @IsIn([PipeLineTypes.MINI_GAME, PipeLineTypes.MINI_GAME_PLUGIN, PipeLineTypes.MINI_PROGRAM, PipeLineTypes.MINI_PROGRAM_PLUGIN], { message: '类型不存在' })
   @IsOptional()
-  readonly type?: string; 
+  readonly type?: PipeLineTypes; 
 
   @IsOptional()
   private_key?: string;
