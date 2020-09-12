@@ -56,7 +56,7 @@ export class UserService {
   }
 
   public async create(dto: CreateUserRequestDto): Promise<UserEntity> {
-    const { job_number, password } = dto;
+    const { job_number, password, ...others } = dto;
 
     const user = await this.findOne({ job_number });
 
@@ -64,7 +64,7 @@ export class UserService {
 
     const hashed_password = encrypt(password);
 
-    return this.userRepository.save({ ...dto, hashed_password });
+    return this.userRepository.save({ job_number, hashed_password, ...others });
   }
 
   public async updateUserLoginAt(id: number): Promise<boolean> {
