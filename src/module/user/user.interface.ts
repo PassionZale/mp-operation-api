@@ -1,3 +1,7 @@
+import { UserSex } from "@src/common/enum/user-sex.enum";
+import { UserStatus } from "@src/common/enum/user-status.enum";
+import { UserRole } from "@src/common/enum/user-role.enum";
+
 export interface IUserData {
   id: number;
 
@@ -9,13 +13,13 @@ export interface IUserData {
 
   job_number: number;
 
-  role: number;
+  role: UserRole;
 
   hashed_password?: string;
 
-  sex: string;
+  sex: UserSex;
 
-  status: string;
+  status: UserStatus;
 
   created_at?: Date;
 

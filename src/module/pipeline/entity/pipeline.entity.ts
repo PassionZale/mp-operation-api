@@ -6,12 +6,15 @@ import {
   JoinColumn,
   OneToMany,
 } from 'typeorm';
-import { DateValueTransformer } from '@src/database/database.transformer';
 
+import { DateValueTransformer } from '@src/database/database.transformer';
 import { UserEntity } from '@src/module/user/user.entity';
 import { PipeLineDeployLogEntity } from './pipeline-deploy-log.entity';
 import { PipeLineReleaseLogEntity } from './pipeline-release-log.entity';
-import { PipeLineTypes, PipeLineCIRobots } from '@src/common/enum/pipeline.enum';
+import {
+  PipeLineTypes,
+  PipeLineCIRobots,
+} from '@src/common/enum/pipeline.enum';
 
 /**
  * 流水线
