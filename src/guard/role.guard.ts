@@ -1,7 +1,7 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { Observable } from 'rxjs';
-import { IUserData } from '@src/module/user/user.interface';
+import { IRequestUser } from '@src/common/interface/request-user.interface';
 import { ApiException } from '@src/filter/api-exception.filter';
 import { ApiErrorCode } from '@src/common/enum/api-error-code.enum';
 import { ROLE_GUARD_OPTIONS } from '@src/common/constant/meta.constant';
@@ -23,7 +23,7 @@ export class RoleGuard implements CanActivate {
 
     const request = context.switchToHttp().getRequest();
 
-    const user: IUserData = request.user;
+    const user: IRequestUser = request.user;
 
     // 当前用户权限值 大于 所需权限值，则无权访问
     if (user.role > role) {

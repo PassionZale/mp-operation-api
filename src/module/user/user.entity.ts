@@ -38,7 +38,7 @@ export class UserEntity {
 
   // 密码
   @Column({ select: false })
-  hashed_password: string;
+  hashed_password?: string;
 
   // 性别
   @Column('enum', {

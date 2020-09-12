@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
+import { UserEntity } from '@src/module/user/user.entity';
 import { UserService } from '@src/module/user/user.service';
 import { verify } from '@src/common/helper/bcrypt.helper';
 import { ITokenData } from './auth.interface';
-import { IUserData, IFindOneCondition } from '../user/user.interface';
+import { IFindOneCondition } from '../user/user.interface';
 
 @Injectable()
 export class AuthService {
@@ -21,7 +22,7 @@ export class AuthService {
   public async validateUserPassword(
     job_number: number,
     password: string,
-  ): Promise<IUserData> {
+  ): Promise<UserEntity> {
     const user = await this.userService.findOne({
       job_number,
       select_hashed_password: true,
@@ -41,7 +42,7 @@ export class AuthService {
    * 将 id 和 job_number 注入 jwt payload，并颁发 access_token
    * @param user
    */
-  public async createAccessToken(user: IUserData): Promise<ITokenData> {
+  public async createAccessToken(user: UserEntity): Promise<ITokenData> {
     await this.userService.updateUserLoginAt(user.id);
 
     const sub = { id: user.id, job_number: user.job_number };
@@ -55,7 +56,7 @@ export class AuthService {
    * 根据 payload 中的 id 和 job_number 查询用户是否存在
    * @param payload
    */
-  public async validatePayload(payload: IFindOneCondition): Promise<IUserData> {
+  public async validatePayload(payload: IFindOneCondition): Promise<UserEntity> {
     const user = await this.userService.findOne(payload);
 
     return user;

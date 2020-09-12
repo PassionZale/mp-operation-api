@@ -6,8 +6,8 @@ import { JwtAuthGuard } from '@src/guard/jwt-auth.guard';
 import { RoleGuard } from '@src/guard/role.guard';
 import { Role } from '@src/common/decorator/role.decorator';
 import { UserRole } from '@src/common/enum/user-role.enum';
-import { CurrentUser } from '@src/common/decorator/current-user.decorator';
-import { IUserData } from '@src/module/user/user.interface';
+import { IRequestUser } from '@src/common/interface/request-user.interface';
+import { RequestUser } from '@src/common/decorator/request-user.decorator';
 
 @Controller()
 export class PipeLineController {
@@ -27,7 +27,7 @@ export class PipeLineController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Role(UserRole.ADMIN)
   public async create(
-    @CurrentUser() user: IUserData,
+    @RequestUser() user: IRequestUser,
     @Body() body: CreatePipeLineRequestDto,
   ): Promise<PipeLineEntity> {
     return this.pipeLineService.create({ ...body, user });

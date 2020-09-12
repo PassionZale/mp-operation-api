@@ -1,6 +1,6 @@
 import { IsNotEmpty, MaxLength, IsOptional, IsIn } from 'class-validator';
 import { PipeLineTypes } from '@src/common/enum/pipeline.enum';
-import { IUserData } from '@src/module/user/user.interface';
+import { IRequestUser } from '@src/common/interface/request-user.interface';
 
 export class CreatePipeLineRequestDto {
   @MaxLength(100, { message: '名称长度较大，最大长度为 $constraint1 字符' })
@@ -27,5 +27,5 @@ export class CreatePipeLineRequestDto {
   private_key?: string;
 
   @IsOptional()
-  user?: IUserData;
+  user?: IRequestUser;
 }

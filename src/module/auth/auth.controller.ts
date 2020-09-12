@@ -9,10 +9,10 @@ import {
 import { AuthService } from '../auth/auth.service';
 import { LoginRequestDto } from './dto/request/login.request.dto';
 import { LoginResponseDto } from './dto/response/login.reponse.dto';
-import { IUserData } from '@src/module/user/user.interface';
 import { JwtAuthGuard } from '@src/guard/jwt-auth.guard';
 import { ApiException } from '@src/filter/api-exception.filter';
-import { CurrentUser } from '@src/common/decorator/current-user.decorator';
+import { RequestUser } from '@src/common/decorator/request-user.decorator';
+import { IRequestUser } from '@src/common/interface/request-user.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -33,7 +33,7 @@ export class AuthController {
 
   @Get('userinfo')
   @UseGuards(JwtAuthGuard)
-  public userInfo(@CurrentUser() user: IUserData): IUserData {
+  public userInfo(@RequestUser() user: IRequestUser): IRequestUser {
     return user;
   }
 }

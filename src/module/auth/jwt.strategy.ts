@@ -6,8 +6,8 @@ import { AuthService } from './auth.service';
 import { IPayload } from './auth.interface';
 import { ApiException } from '@src/filter/api-exception.filter';
 import { ApiErrorCode } from '@src/common/enum/api-error-code.enum';
-import { IUserData } from '../user/user.interface';
 import { UserStatus } from '@src/common/enum/user-status.enum';
+import { IRequestUser } from '@src/common/interface/request-user.interface';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -29,7 +29,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * 返回用户：会将当前返回值写入上下文中，可以通过 @Request() req.user 获取
    * @param payload JWT 负载
    */
-  public async validate(payload: IPayload): Promise<IUserData> {
+  public async validate(payload: IPayload): Promise<IRequestUser> {
     const { id, job_number } = payload;
 
     const user = await this.authService.validatePayload({ id, job_number });

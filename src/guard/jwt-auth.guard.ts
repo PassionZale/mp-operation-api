@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { VerifyErrors } from 'jsonwebtoken';
 import { Observable } from 'rxjs';
 import { ApiException } from '@src/filter/api-exception.filter';
-import { IUserData } from '@src/module/user/user.interface';
+import { IRequestUser } from '@src/common/interface/request-user.interface';
 import { JwtErrorName } from '@src/common/enum/jwt-error-name.enum';
 import { ApiErrorCode } from '@src/common/enum/api-error-code.enum';
 
@@ -16,7 +16,7 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
     return super.canActivate(context);
   }
 
-  handleRequest(err?: ApiException, user?: IUserData, info?: VerifyErrors): any {
+  handleRequest(err?: ApiException, user?: IRequestUser, info?: VerifyErrors): any {
     // user 由 jwt.strategy.ts 中的 validate() 所返回
     if (user && !err && !info) {
       return user;
