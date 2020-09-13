@@ -14,7 +14,7 @@ export class PipeLineController {
   constructor(private readonly pipeLineService: PipeLineService) {}
 
   @Get('pipeline/:id')
-  public async findOne(@Param() id: number): Promise<PipeLineEntity> {
+  public async findOne(@Param('id') id: number): Promise<PipeLineEntity> {
     return this.pipeLineService.findOne(id);
   }
 

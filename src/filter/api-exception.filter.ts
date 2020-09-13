@@ -19,7 +19,7 @@ export class ApiException extends HttpException implements IBaseResponse {
   timestamp: number;
 
   constructor(
-    errorMessage: string,
+    errorMessage?: string,
     errorCode?: ApiErrorCode,
     errorData?: unknown,
   ) {

@@ -30,6 +30,12 @@ npm install --save @nestjs/passport @nestjs/jwt passport passport-jwt bcryptjs
 npm install --save-dev @types/passport-jwt @types/jsonwebtoken @types/bcryptjs
 ```
 
+### UPLOAD
+```bash
+npm install --save multer mkdirp
+npm install --save-dev @types/multer @types/mkdirp
+```
+
 ### VALIDATE
 ```bash
 npm install --save class-transformer class-validator
