@@ -51,8 +51,9 @@ export const multerConfig = {
  *  FileInterceptor('file', getAvatarMulterOptions()),
  * )
  * public async upload() {...}
+ * 所以暂时只能这样一把梭了~
  * 
- * #TODO 单独扩展 FileInterceptor, 将下下方函数封装为类，集成至拦截器中
+ * #TODO 单独扩展 FileInterceptor, 将下方函数封装为 Service，集成至拦截器中
  */
 
 // 用户头像上传
@@ -145,12 +146,12 @@ export const getPipelineMulterOptions = (): MulterOptions =>  {
       file: Express.Multer.File,
       cb: multerOptionsCallBack,
     ): void => {
-      if (file.mimetype.match(/\/(zip))$/)) {
+      if (file.mimetype.match(/\/(zip|rar)$/)) {
         cb(null, true);
       } else {
         cb(
           new ApiException(
-            '只能上传 zip 类型的文件',
+            '只能上传 zip|rar 类型的文件',
             ApiErrorCode.FILE_MIMETYPE_INVALID,
           ),
           false,

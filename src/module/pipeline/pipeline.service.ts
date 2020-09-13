@@ -4,15 +4,19 @@ import { Repository } from 'typeorm';
 
 import { PipeLineEntity } from './entity/pipeline.entity';
 import { CreatePipeLineRequestDto } from './dto/request/create-pipeline.request.dto';
+import { PipeLineDeployLogEntity } from './entity/pipeline-deploy-log.entity';
+import { IPipeLineDeployDto } from './pipeline.interface';
 
 @Injectable()
 export class PipeLineService {
   constructor(
     @InjectRepository(PipeLineEntity)
     private readonly pipeLineEntity: Repository<PipeLineEntity>,
+    @InjectRepository(PipeLineDeployLogEntity)
+    private readonly pipeLineDeployLogEntity: Repository<PipeLineDeployLogEntity>,
   ) {}
 
-  public async findOne(id: number): Promise<PipeLineEntity> {
+  public async findOne(id: string): Promise<PipeLineEntity> {
     return this.pipeLineEntity.findOne(id, {
       relations: ['user', 'pipeline_deploy_logs'],
     });
@@ -24,5 +28,9 @@ export class PipeLineService {
 
   public async create(dto: CreatePipeLineRequestDto): Promise<PipeLineEntity> {
     return this.pipeLineEntity.save(dto);
+  }
+
+  public async deploy(dto: IPipeLineDeployDto): Promise<PipeLineDeployLogEntity> {
+    return this.pipeLineDeployLogEntity.save(dto);
   }
 }

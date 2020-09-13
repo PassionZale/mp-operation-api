@@ -66,7 +66,7 @@ export class UserController {
   public async uploadAvatar(
     @RequestUser('id') id: number,
     @UploadedFile() file: Express.Multer.File,
-  ): Promise<any> {
+  ): Promise<string> {
     const updateResult = await this.userService.updateUserAvatar(id, file.path);
 
     if (updateResult) return file.path;
