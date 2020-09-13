@@ -32,8 +32,8 @@ npm install --save-dev @types/passport-jwt @types/jsonwebtoken @types/bcryptjs
 
 ### UPLOAD
 ```bash
-npm install --save multer mkdirp
-npm install --save-dev @types/multer @types/mkdirp
+npm install --save multer mkdirp uuid
+npm install --save-dev @types/multer @types/mkdirp @types/uuid
 ```
 
 ### VALIDATE

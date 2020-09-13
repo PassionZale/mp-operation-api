@@ -18,4 +18,8 @@ export const enum ApiErrorCode {
    * 权限不足
    */
   PERMISSION_DENIED = 40003,
+  /**
+   * 上传文件类型不合法
+   */
+  FILE_MIMETYPE_INVALID = 40004,
 }

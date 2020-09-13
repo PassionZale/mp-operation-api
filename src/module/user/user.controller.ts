@@ -1,4 +1,15 @@
-import { Controller, Get, Post, Body, UseGuards, Param } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  UseGuards,
+  Param,
+  UseInterceptors,
+  UploadedFile,
+  Put,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 import { UserEntity } from './user.entity';
 import { UserService } from './user.service';
@@ -7,10 +18,15 @@ import { JwtAuthGuard } from '@src/guard/jwt-auth.guard';
 import { RoleGuard } from '@src/guard/role.guard';
 import { Role } from '@src/common/decorator/role.decorator';
 import { UserRole } from '@src/common/enum/user-role.enum';
+import { RequestUser } from '@src/common/decorator/request-user.decorator';
+import { ApiException } from '@src/filter/api-exception.filter';
+import { getAvatarMulterOptions } from '@src/config/multer/configuration';
 
 @Controller()
 export class UserController {
-  constructor(private readonly userService: UserService) {}
+  constructor(
+    private readonly userService: UserService,
+  ) {}
 
   @Get('user/:id')
   @Role(UserRole.ADMIN)
@@ -39,5 +55,22 @@ export class UserController {
     // typeorm repository.save() 现在会忽略 @Column({ select: false })，仍然会返回 hahsed_password
     // 所以此处解构掉 hashed_password 再返回
     return result;
+  }
+
+  @Put('user/avatar')
+  @Role(UserRole.STAFF)
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @UseInterceptors(
+    FileInterceptor('file', getAvatarMulterOptions()),
+  )
+  public async uploadAvatar(
+    @RequestUser('id') id: number,
+    @UploadedFile() file: Express.Multer.File,
+  ): Promise<any> {
+    const updateResult = await this.userService.updateUserAvatar(id, file.path);
+
+    if (updateResult) return file.path;
+
+    throw new ApiException();
   }
 }

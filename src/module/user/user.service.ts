@@ -81,4 +81,17 @@ export class UserService {
 
     return !!updateResult.affected;
   }
+
+  public async updateUserAvatar(id: number, filepath: string): Promise<boolean> {
+    const updateResult: UpdateResult = await this.userRepository
+      .createQueryBuilder()
+      .update(UserEntity)
+      .set({
+        avatar: filepath,
+      })
+      .where('id = :id', { id })
+      .execute();
+
+    return !!updateResult.affected;
+  }
 }
