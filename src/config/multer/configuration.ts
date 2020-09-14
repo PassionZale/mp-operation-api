@@ -40,9 +40,8 @@ export const multerConfig = {
     root: './media/public',
     fileSize: 20 * 1024 * 1024,
     files: 5,
-  }
-}
-
+  },
+};
 
 /**
  * getAvatarMulterOptions, getPipelineMulterOptions, getPublicMulterOptions
@@ -52,12 +51,12 @@ export const multerConfig = {
  * )
  * public async upload() {...}
  * 所以暂时只能这样一把梭了~
- * 
+ *
  * #TODO 单独扩展 FileInterceptor, 将下方函数封装为 Service，集成至拦截器中
  */
 
 // 用户头像上传
-export const getAvatarMulterOptions = (): MulterOptions =>  {
+export const getAvatarMulterOptions = (): MulterOptions => {
   return {
     /**
      * 文件大小、数量限制
@@ -105,11 +104,11 @@ export const getAvatarMulterOptions = (): MulterOptions =>  {
 
         const m = moment().get('M') + 1;
         const month = m > 10 ? m : `0${m}`;
-        
+
         const date = moment().get('D');
 
         // `${root}/${year}/${month}/${date}`;
-        const fullPath = join(root, `${year}`, `${month}`, `${date}`)
+        const fullPath = join(root, `${year}`, `${month}`, `${date}`);
 
         // 如果目录不存在，则创建目录
         if (!existsSync(fullPath)) {
@@ -127,10 +126,10 @@ export const getAvatarMulterOptions = (): MulterOptions =>  {
       },
     }),
   };
-}
+};
 
 // 流水线压缩包上传
-export const getPipelineMulterOptions = (): MulterOptions =>  {
+export const getPipelineMulterOptions = (): MulterOptions => {
   return {
     /**
      * 文件大小、数量限制
@@ -147,7 +146,7 @@ export const getPipelineMulterOptions = (): MulterOptions =>  {
       file: Express.Multer.File,
       cb: multerOptionsCallBack,
     ): void => {
-      if (file.mimetype.match(/\/(zip|rar)$/)) {
+      if (file.originalname.match(/\.(zip|rar)$/i)) {
         cb(null, true);
       } else {
         cb(
@@ -178,10 +177,10 @@ export const getPipelineMulterOptions = (): MulterOptions =>  {
 
         const m = moment().get('M') + 1;
         const month = m > 10 ? m : `0${m}`;
-        
+
         const date = moment().get('D');
 
-        const fullPath = `${root}/${year}/${month}/${date}`;
+        const fullPath = join(root, `${year}`, `${month}`, `${date}`);
 
         // 如果目录不存在，则创建目录
         if (!existsSync(fullPath)) {
@@ -199,10 +198,10 @@ export const getPipelineMulterOptions = (): MulterOptions =>  {
       },
     }),
   };
-}
+};
 
 // 公共资源上传，如：富文本图片、分类图片等等
-export const getPublicMulterOptions = (): MulterOptions =>  {
+export const getPublicMulterOptions = (): MulterOptions => {
   return {
     /**
      * 文件大小、数量限制
@@ -250,10 +249,10 @@ export const getPublicMulterOptions = (): MulterOptions =>  {
 
         const m = moment().get('M') + 1;
         const month = m > 10 ? m : `0${m}`;
-        
+
         const date = moment().get('D');
 
-        const fullPath = `${root}/${year}/${month}/${date}`;
+        const fullPath = join(root, `${year}`, `${month}`, `${date}`);
 
         // 如果目录不存在，则创建目录
         if (!existsSync(fullPath)) {
@@ -271,4 +270,4 @@ export const getPublicMulterOptions = (): MulterOptions =>  {
       },
     }),
   };
-}
+};

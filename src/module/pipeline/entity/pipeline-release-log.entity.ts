@@ -1,7 +1,5 @@
-import { Entity, PrimaryGeneratedColumn, Column, ManyToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { DateValueTransformer } from '@src/database/database.transformer';
-import { PipeLineEntity } from './pipeline.entity';
-import { PipeLineDeployLogEntity } from './pipeline-deploy-log.entity';
 
 /**
  * 流水线发布日志
@@ -12,19 +10,13 @@ export class PipeLineReleaseLogEntity {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @ManyToOne(
-    () => PipeLineEntity,
-    pipeline => pipeline.pipeline_release_logs,
-  )
-  @JoinColumn({ name: 'pipeline_id' })
-  pipeline: PipeLineEntity;
+  // 流水线部署 ID
+  @Column('int')
+  pipeline_deploy_id: number;
 
-  @ManyToOne(
-    () => PipeLineDeployLogEntity,
-    pipeline_deploy => pipeline_deploy.pipeline_release_logs,
-  )
-  @JoinColumn({ name: 'pipeline_deploy_id' })
-  pipeline_deploy: PipeLineDeployLogEntity;  
+  // 提交者
+  @Column('int')
+  released_by: number;
 
   // 发布时间
   @Column('datetime', {

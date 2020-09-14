@@ -3,9 +3,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { PipeLineEntity } from './entity/pipeline.entity';
-import { CreatePipeLineRequestDto } from './dto/request/create-pipeline.request.dto';
 import { PipeLineDeployLogEntity } from './entity/pipeline-deploy-log.entity';
-import { IPipeLineDeployDto } from './pipeline.interface';
+import {
+  CreateDeployLogServiceDto,
+  CreatePipeLineServiceDto,
+} from './pipeline.interface';
 
 @Injectable()
 export class PipeLineService {
@@ -13,24 +15,28 @@ export class PipeLineService {
     @InjectRepository(PipeLineEntity)
     private readonly pipeLineEntity: Repository<PipeLineEntity>,
     @InjectRepository(PipeLineDeployLogEntity)
-    private readonly pipeLineDeployLogEntity: Repository<PipeLineDeployLogEntity>,
+    private readonly pipeLineDeployLogEntity: Repository<
+      PipeLineDeployLogEntity
+    >,
   ) {}
 
   public async findPipeLine(id: string): Promise<PipeLineEntity> {
-    return this.pipeLineEntity.findOne(id, {
-      relations: ['user', 'pipeline_deploy_logs'],
-    });
+    return this.pipeLineEntity.findOne(id);
   }
 
   public async findPipeLines(): Promise<PipeLineEntity[]> {
-    return this.pipeLineEntity.find({ relations: ['user'] });
+    return this.pipeLineEntity.find();
   }
 
-  public async createPipeLine(dto: CreatePipeLineRequestDto): Promise<PipeLineEntity> {
+  public async createPipeLine(
+    dto: CreatePipeLineServiceDto,
+  ): Promise<PipeLineEntity> {
     return this.pipeLineEntity.save(dto);
   }
 
-  public async deploy(dto: IPipeLineDeployDto): Promise<PipeLineDeployLogEntity> {
+  public async deployPipeLine(
+    dto: CreateDeployLogServiceDto,
+  ): Promise<PipeLineDeployLogEntity> {
     return this.pipeLineDeployLogEntity.save(dto);
   }
 }
