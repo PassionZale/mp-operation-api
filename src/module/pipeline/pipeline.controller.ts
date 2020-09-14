@@ -116,8 +116,8 @@ export class PipeLineController {
   ): Promise<PipeLineDeployLogEntity> {
     return this.pipeLineService.deployPipeLine({
       ...body,
-      pipeline_id,
       user_id,
+      pipeline_id,
     });
   }
 }
