@@ -56,6 +56,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
         apiRes.message = '文件数量超出限制';
         apiRes.code = ApiErrorCode.FAIL;
         break;
+      case MulterExceptions.LIMIT_UNEXPECTED_FILE:
+        apiRes.message = '上传参数不能为空';
+        apiRes.code = ApiErrorCode.FAIL;
+        break;        
       // 下面这几种异常默认值都为无穷大或者无限制，业务上也没有配置 limits, 一般不会被触发
       // 因此统一用 “文件上传失败” 填充 message
       case MulterExceptions.LIMIT_FIELD_KEY:

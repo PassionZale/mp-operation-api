@@ -1,5 +1,5 @@
 import { existsSync } from 'fs';
-import { extname } from 'path';
+import { extname, join } from 'path';
 
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import { Request } from 'express';
@@ -108,7 +108,8 @@ export const getAvatarMulterOptions = (): MulterOptions =>  {
         
         const date = moment().get('D');
 
-        const fullPath = `${root}/${year}/${month}/${date}`;
+        // `${root}/${year}/${month}/${date}`;
+        const fullPath = join(root, `${year}`, `${month}`, `${date}`)
 
         // 如果目录不存在，则创建目录
         if (!existsSync(fullPath)) {

@@ -1,7 +1,7 @@
 /**
  * 流水线项目类型
  */
-export const enum PipeLineTypes {
+export enum PipeLineTypes {
   /**
    * 小程序
    */

@@ -1,4 +1,4 @@
-export const enum UserSex {
+export enum UserSex {
   /**
    * 男
    */

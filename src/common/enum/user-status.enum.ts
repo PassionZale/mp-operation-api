@@ -1,4 +1,4 @@
-export const enum UserStatus {
+export enum UserStatus {
   /**
    * 活跃
    */

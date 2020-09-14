@@ -27,12 +27,12 @@ export class PipeLineController {
   constructor(private readonly pipeLineService: PipeLineService) {}
 
   @Get('pipeline/:id')
-  public async findOne(@Param('id') id: string): Promise<PipeLineEntity> {
+  public async findPipeLine(@Param('id') id: string): Promise<PipeLineEntity> {
     return this.pipeLineService.findOne(id);
   }
 
   @Get('pipelines')
-  public async findAll(): Promise<PipeLineEntity[]> {
+  public async findPipeLines(): Promise<PipeLineEntity[]> {
     return this.pipeLineService.findAll();
   }
 

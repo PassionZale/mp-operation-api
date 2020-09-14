@@ -21,6 +21,7 @@ import { UserRole } from '@src/common/enum/user-role.enum';
 import { RequestUser } from '@src/common/decorator/request-user.decorator';
 import { ApiException } from '@src/filter/api-exception.filter';
 import { getAvatarMulterOptions } from '@src/config/multer/configuration';
+import { removeForwardSlash } from '@src/common/helper/path.helper';
 
 @Controller()
 export class UserController {
@@ -65,11 +66,17 @@ export class UserController {
   )
   public async uploadAvatar(
     @RequestUser('id') id: number,
-    @UploadedFile() file: Express.Multer.File,
+    @UploadedFile() file: Express.Multer.File | undefined,
   ): Promise<string> {
-    const updateResult = await this.userService.updateUserAvatar(id, file.path);
+    if(file === undefined) {
+      throw new ApiException('上传文件不能为空');
+    }
 
-    if (updateResult) return file.path;
+    const filepath = removeForwardSlash(file.path);
+
+    const updateResult = await this.userService.updateUserAvatar(id, filepath);
+
+    if (updateResult) return filepath;
 
     throw new ApiException();
   }

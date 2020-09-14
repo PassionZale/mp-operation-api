@@ -55,7 +55,7 @@ export class UserEntity {
       UserStatus.INACTIVATED,
       UserStatus.LOSED,
     ],
-    default: UserStatus.INACTIVATED,
+    default: UserStatus.ACTIVED,
   })
   status: UserStatus;
 
