@@ -28,6 +28,16 @@ export class PipeLineService {
     return this.pipeLineEntity.find();
   }
 
+  public async findPipeLineDeploy(id: number): Promise<any> {
+    const pipeLineDeploy = await this.pipeLineDeployLogEntity
+      .createQueryBuilder('pipeline_deploy_log')
+      .leftJoinAndMapOne('pipeline_deploy_log.deployer', 'user', 'user', 'user.id = pipeline_deploy_log.deployed_by')
+      .where('pipeline_deploy_log.id = :id', { id })
+      .getOne();
+
+    return pipeLineDeploy;
+  }
+
   public async createPipeLine(
     dto: CreatePipeLineServiceDto,
   ): Promise<PipeLineEntity> {

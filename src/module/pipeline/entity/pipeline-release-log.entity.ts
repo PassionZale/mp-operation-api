@@ -1,5 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { DateValueTransformer } from '@src/database/database.transformer';
+import { PipeLineDeployLogEntity } from './pipeline-deploy-log.entity';
+import { UserEntity } from '@src/module/user/user.entity';
 
 /**
  * 流水线发布日志
@@ -12,11 +14,13 @@ export class PipeLineReleaseLogEntity {
 
   // 流水线部署 ID
   @Column('int')
-  pipeline_deploy_id: number;
+  deploy_id: number;
+  deploy_log?: PipeLineDeployLogEntity;
 
   // 提交者
   @Column('int')
-  released_by: number;
+  user_id: number;
+  user?: UserEntity;
 
   // 发布时间
   @Column('datetime', {

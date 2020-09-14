@@ -2,10 +2,11 @@ import { CreateDeployLogRequestDto } from './dto/request/create-deploy-log.reque
 import { CreatePipeLineRequestDto } from './dto/request/create-pipeline.request.dto';
 
 export interface CreatePipeLineServiceDto extends CreatePipeLineRequestDto {
-  created_by: number;
+  user_id: number;
 }
 
 export interface CreateDeployLogServiceDto extends CreateDeployLogRequestDto {
+  user_id: number;
+
   pipeline_id: string;
-  deployed_by: number;
 }

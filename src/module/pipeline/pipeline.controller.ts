@@ -41,7 +41,6 @@ export class PipeLineController {
 
   /**
    * 查询流水线列表
-   * @param id
    */
   @Get('pipelines')
   public async findPipeLines(): Promise<PipeLineEntity[]> {
@@ -57,12 +56,12 @@ export class PipeLineController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Role(UserRole.ADMIN)
   public async createPipeLine(
-    @RequestUser('id') created_by: number,
+    @RequestUser('id') user_id: number,
     @Body() body: CreatePipeLineRequestDto,
   ): Promise<PipeLineEntity> {
     const pipeLine = await this.pipeLineService.createPipeLine({
       ...body,
-      created_by,
+      user_id,
     });
 
     const { private_key } = pipeLine;
@@ -95,6 +94,15 @@ export class PipeLineController {
   }
 
   /**
+   * 查询日志记录
+   * @param id 
+   */
+  @Get('pipeline/deploy/:id')
+  public async findPipeLineDeploy(@Param('id') id: number): Promise<any> {
+    return this.pipeLineService.findPipeLineDeploy(id)
+  }
+
+  /**
    * 部署流水线
    * @param body
    */
@@ -102,14 +110,14 @@ export class PipeLineController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Role(UserRole.DEVELOPER)
   public async deployPipeLine(
-    @RequestUser('id') deployed_by: number,
+    @RequestUser('id') user_id: number,
     @Param('id') pipeline_id: string,
     @Body() body: CreateDeployLogRequestDto,
   ): Promise<PipeLineDeployLogEntity> {
     return this.pipeLineService.deployPipeLine({
       ...body,
       pipeline_id,
-      deployed_by,
+      user_id,
     });
   }
 }

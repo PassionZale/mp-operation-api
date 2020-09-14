@@ -7,6 +7,7 @@ import {
   PipeLineCIRobots,
 } from '@src/common/enum/pipeline.enum';
 import { desensitization } from '@src/common/helper/sensitive.helper';
+import { UserEntity } from '@src/module/user/user.entity';
 
 /**
  * 流水线
@@ -50,7 +51,8 @@ export class PipeLineEntity {
 
   // 创建者
   @Column('int')
-  created_by: number;
+  user_id: number;
+  user?: UserEntity;
 
   // 创建时间
   @Column('datetime', {
