@@ -28,29 +28,34 @@ export class PipeLineController {
 
   @Get('pipeline/:id')
   public async findPipeLine(@Param('id') id: string): Promise<PipeLineEntity> {
-    return this.pipeLineService.findOne(id);
+    return this.pipeLineService.findPipeLine(id);
   }
 
   @Get('pipelines')
   public async findPipeLines(): Promise<PipeLineEntity[]> {
-    return this.pipeLineService.findAll();
+    return this.pipeLineService.findPipeLines();
   }
 
   @Post('pipeline')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Role(UserRole.ADMIN)
-  public async create(
+  public async createPipeLine(
     @RequestUser() user: IRequestUser,
     @Body() body: CreatePipeLineRequestDto,
   ): Promise<PipeLineEntity> {
-    return this.pipeLineService.create({ ...body, user });
+    return this.pipeLineService.createPipeLine({ ...body, user });
   }
 
-  @Post('pipeline/:id/deploy')
+  // @Post('pipeline/:id/deploy')
+  // public async deployPipeLine(): Promise<PipeLineDeployLogEntity> {
+
+  // }
+
+  @Post('pipeline/:id/deploy/upload')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Role(UserRole.DEVELOPER)
   @UseInterceptors(FileInterceptor('file', getPipelineMulterOptions()))
-  public async deploy(
+  public async uploadDeploy(
     @Body() body: CreateDeployLogRequestDto,
     @Param('id') id: string,
     @UploadedFile() file: Express.Multer.File,

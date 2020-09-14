@@ -16,17 +16,17 @@ export class PipeLineService {
     private readonly pipeLineDeployLogEntity: Repository<PipeLineDeployLogEntity>,
   ) {}
 
-  public async findOne(id: string): Promise<PipeLineEntity> {
+  public async findPipeLine(id: string): Promise<PipeLineEntity> {
     return this.pipeLineEntity.findOne(id, {
       relations: ['user', 'pipeline_deploy_logs'],
     });
   }
 
-  public async findAll(): Promise<PipeLineEntity[]> {
+  public async findPipeLines(): Promise<PipeLineEntity[]> {
     return this.pipeLineEntity.find({ relations: ['user'] });
   }
 
-  public async create(dto: CreatePipeLineRequestDto): Promise<PipeLineEntity> {
+  public async createPipeLine(dto: CreatePipeLineRequestDto): Promise<PipeLineEntity> {
     return this.pipeLineEntity.save(dto);
   }
 
