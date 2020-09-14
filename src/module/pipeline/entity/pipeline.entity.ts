@@ -38,7 +38,7 @@ export class PipeLineEntity {
 
   // 上传秘钥，可为空，为空则只能部署不能发布
   @Column('varchar', { nullable: true })
-  @Transform(val => desensitization(val, 2, -2))
+  @Transform(val => desensitization(val))
   private_key: string;
 
   // ci 机器人

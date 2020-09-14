@@ -23,6 +23,7 @@ import { CreateDeployLogRequestDto } from './dto/request/create-deploy-log.reque
 import { PipeLineDeployLogEntity } from './entity/pipeline-deploy-log.entity';
 import { ApiException } from '@src/filter/api-exception.filter';
 import { removeForwardSlash } from '@src/common/helper/path.helper';
+import { desensitization } from '@src/common/helper/sensitive.helper';
 
 @Controller()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -59,7 +60,17 @@ export class PipeLineController {
     @RequestUser('id') created_by: number,
     @Body() body: CreatePipeLineRequestDto,
   ): Promise<PipeLineEntity> {
-    return this.pipeLineService.createPipeLine({ ...body, created_by });
+    const pipeLine = await this.pipeLineService.createPipeLine({
+      ...body,
+      created_by,
+    });
+
+    const { private_key } = pipeLine;
+
+    // 脱敏返回 private_key
+    pipeLine.private_key = desensitization(private_key);
+
+    return pipeLine;
   }
 
   /**
