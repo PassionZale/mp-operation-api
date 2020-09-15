@@ -5,6 +5,7 @@ import { PipeLineDeployLogEntity } from './entity/pipeline-deploy-log.entity';
 import { PipeLineReleaseLogEntity } from './entity/pipeline-release-log.entity';
 import { PipeLineService } from './pipeline.service';
 import { PipeLineController } from './pipeline.controller';
+import { AppConfigModule } from '@src/config/app/config.module';
 
 @Module({
   imports: [
@@ -13,6 +14,7 @@ import { PipeLineController } from './pipeline.controller';
       PipeLineDeployLogEntity,
       PipeLineReleaseLogEntity,
     ]),
+    AppConfigModule
   ],
   providers: [PipeLineService],
   controllers: [PipeLineController],

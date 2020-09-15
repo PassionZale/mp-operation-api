@@ -7,6 +7,4 @@ export interface CreatePipeLineServiceDto extends CreatePipeLineRequestDto {
 
 export interface CreateDeployLogServiceDto extends CreateDeployLogRequestDto {
   user_id: number;
-
-  pipeline_id: string;
 }
