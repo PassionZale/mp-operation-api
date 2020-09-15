@@ -19,12 +19,9 @@ import { UserRole } from '@src/common/enum/user-role.enum';
 import { RequestUser } from '@src/common/decorator/request-user.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { getPipelineMulterOptions } from '@src/config/multer/configuration';
-import { CreateDeployLogRequestDto } from './dto/request/create-deploy-log.request.dto';
-import { PipeLineDeployLogEntity } from './entity/pipeline-deploy-log.entity';
 import { ApiException } from '@src/filter/api-exception.filter';
 import { removeForwardSlash } from '@src/common/helper/path.helper';
 import { desensitization } from '@src/common/helper/sensitive.helper';
-import { DownloadRequestDto } from './dto/request/download.request.dto';
 
 @Controller()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -90,53 +87,6 @@ export class PipeLineController {
     }
 
     const filepath = removeForwardSlash(file.path);
-
-    return filepath;
-  }
-  
-  /**
-   * 查询日志记录
-   * @param id 
-   */
-  @Get('pipeline/deploy/:id')
-  public async findPipeLineDeploy(@Param('id') id: number): Promise<PipeLineDeployLogEntity> {
-    return this.pipeLineService.findPipeLineDeploy(id)
-  }
-
-  /**
-   * 查询日志记录列表
-   */
-  @Get('pipeline/deploys')
-  public async findPipeLineDeploys(): Promise<PipeLineDeployLogEntity[]> {
-    return this.pipeLineService.findPipeLineDeploys()
-  }
-
-
-  /**
-   * 部署流水线
-   * @param body
-   */
-  @Post('pipeline/:id/deploy')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @Role(UserRole.DEVELOPER)
-  public async deployPipeLine(
-    @RequestUser('id') user_id: number,
-    @Param('id') pipeline_id: string,
-    @Body() body: CreateDeployLogRequestDto,
-  ): Promise<PipeLineDeployLogEntity> {
-    return this.pipeLineService.deployPipeLine({
-      ...body,
-      user_id,
-      pipeline_id,
-    });
-  }
-
-  /**
-   * 下载部署文件
-   */
-  @Get('pipeline/:pipeline_id/deploy/:deploy_id/download')
-  public async downloadPipeline(@Param() params: DownloadRequestDto): Promise<any> {
-    const filepath = await this.pipeLineService.getDeployProjectPath(params)
 
     return filepath;
   }

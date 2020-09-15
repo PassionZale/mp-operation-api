@@ -24,4 +24,7 @@ export class CreatePipeLineRequestDto {
 
   @IsOptional()
   private_key?: string;
+
+  @IsOptional()
+  user_id?: number;
 }
