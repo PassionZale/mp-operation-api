@@ -40,8 +40,8 @@ export class PipeLineDeployService {
       .leftJoinAndMapOne(
         'pipeline_deploy_log.user',
         'user',
-        'user',
-        'user.id = pipeline_deploy_log.user_id',
+        'u',
+        'u.id = pipeline_deploy_log.user_id',
       )
       .getMany();
 
@@ -52,6 +52,28 @@ export class PipeLineDeployService {
     dto: CreateDeployLogRequestDto,
   ): Promise<PipeLineDeployLogEntity> {
     return this.pipeLineDeployLogRepository.save(dto);
+  }
+
+  public async getProjectPath(dto: DownloadRequestDto): Promise<string> {
+    const deploy = await this.pipeLineDeployLogRepository
+      .createQueryBuilder('pdl')
+      .where('pdl.id = :id', { id: dto.deploy_id })
+      .andWhere('pdl.pipeline_id = :pipeline_id', {
+        pipeline_id: dto.pipeline_id,
+      })
+      .getOne();
+
+    if (!deploy) throw new ApiException('无法查询所指定的部署记录');
+
+    const { project_path } = deploy;
+
+    try {
+      await fs.promises.access(project_path);
+
+      return project_path;
+    } catch (error) {
+      throw new ApiException('部署文件不存在');
+    }
   }
 
   public async getFileFullPath(dto: DownloadRequestDto): Promise<string> {
