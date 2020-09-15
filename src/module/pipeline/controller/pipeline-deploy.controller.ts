@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Param, Post, Query, UseGuards, Res, NotFoundException } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+  Res,
+  NotFoundException,
+} from '@nestjs/common';
 import { RequestUser } from '@src/common/decorator/request-user.decorator';
 import { Role } from '@src/common/decorator/role.decorator';
 import { UserRole } from '@src/common/enum/user-role.enum';
@@ -30,17 +40,23 @@ export class PipeLineDeployController {
    * 下载部署文件
    */
   @Get('pipeline-deploy/download')
-  public async downloadPipeline(@Res() response: Response, @Query() query: DownloadRequestDto): Promise<any> {
+  public async downloadPipeline(
+    @Res() res: Response,
+    @Query() query: DownloadRequestDto,
+  ): Promise<any> {
     const filePath = await this.pipeLineDeployService.getProjectPath(query);
 
-    const stats = fs.statSync(filePath); 
+    const stats = fs.statSync(filePath);
 
-    if(stats.isFile()) {
-      response.setHeader('Content-type', Mime.zip);
+    if (stats.isFile()) {
+      res.setHeader('Content-type', Mime.zip);
       // TODO 动态组装名称
-      response.setHeader('Content-Disposition', `attachment; filename=deploy.zip`);
-      response.setHeader('Content-Length', stats.size)
-      return fs.createReadStream(filePath).pipe(response);
+      res.setHeader(
+        'Content-Disposition',
+        `attachment; filename=deploy.zip`,
+      );
+      res.setHeader('Content-Length', stats.size);
+      return fs.createReadStream(filePath).pipe(res);
     } else {
       throw new NotFoundException();
     }
