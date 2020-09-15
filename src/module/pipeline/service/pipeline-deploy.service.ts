@@ -5,9 +5,9 @@ import * as fs from 'fs';
 
 import { AppConfigService } from "@src/config/app/config.service";
 import { ApiException } from "@src/filter/api-exception.filter";
-import { DownloadRequestDto } from "./dto/request/download.request.dto";
-import { PipeLineDeployLogEntity } from "./entity/pipeline-deploy-log.entity";
-import { CreateDeployLogRequestDto } from "./dto/request/create-deploy-log.request.dto";
+import { DownloadRequestDto } from "../dto/request/download.request.dto";
+import { PipeLineDeployLogEntity } from "../entity/pipeline-deploy-log.entity";
+import { CreateDeployLogRequestDto } from "../dto/request/create-deploy-log.request.dto";
 
 @Injectable()
 export class PipeLineDeployService {
@@ -25,8 +25,8 @@ export class PipeLineDeployService {
       .leftJoinAndMapOne(
         'pipeline_deploy_log.user',
         'user',
-        'user',
-        'user.id = pipeline_deploy_log.user_id',
+        'u',
+        'u.id = pipeline_deploy_log.user_id',
       )
       .where('pipeline_deploy_log.id = :id', { id })
       .getOne();

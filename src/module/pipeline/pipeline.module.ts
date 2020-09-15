@@ -1,13 +1,14 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
+
+import { AppConfigModule } from '@src/config/app/config.module';
 import { PipeLineEntity } from './entity/pipeline.entity';
 import { PipeLineDeployLogEntity } from './entity/pipeline-deploy-log.entity';
 import { PipeLineReleaseLogEntity } from './entity/pipeline-release-log.entity';
-import { PipeLineService } from './pipeline.service';
-import { PipeLineController } from './pipeline.controller';
-import { AppConfigModule } from '@src/config/app/config.module';
-import { PipeLineDeployService } from './pipeline-deploy.service';
-import { PipeLineDeployController } from './pipeline-deploy.controller';
+import { PipeLineService } from './service/pipeline.service';
+import { PipeLineController } from './controller/pipeline.controller';
+import { PipeLineDeployService } from './service/pipeline-deploy.service';
+import { PipeLineDeployController } from './controller/pipeline-deploy.controller';
 
 @Module({
   imports: [

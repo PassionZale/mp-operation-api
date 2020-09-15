@@ -4,10 +4,10 @@ import { Role } from '@src/common/decorator/role.decorator';
 import { UserRole } from '@src/common/enum/user-role.enum';
 import { JwtAuthGuard } from '@src/guard/jwt-auth.guard';
 import { RoleGuard } from '@src/guard/role.guard';
-import { CreateDeployLogRequestDto } from './dto/request/create-deploy-log.request.dto';
-import { DownloadRequestDto } from './dto/request/download.request.dto';
-import { PipeLineDeployLogEntity } from './entity/pipeline-deploy-log.entity';
-import { PipeLineDeployService } from './pipeline-deploy.service';
+import { CreateDeployLogRequestDto } from '../dto/request/create-deploy-log.request.dto';
+import { DownloadRequestDto } from '../dto/request/download.request.dto';
+import { PipeLineDeployLogEntity } from '../entity/pipeline-deploy-log.entity';
+import { PipeLineDeployService } from '../service/pipeline-deploy.service';
 
 @Controller()
 export class PipeLineDeployController {
@@ -16,11 +16,21 @@ export class PipeLineDeployController {
   /**
    * 部署记录列表
    */
-  @Get('pipeline-deoloys')
+  @Get('pipeline-deploys')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Role(UserRole.DEVELOPER)
   public async findPipeLineDeploys(): Promise<PipeLineDeployLogEntity[]> {
     return this.pipeLineDeployService.findAll();
+  }
+
+  /**
+   * 下载部署文件
+   */
+  @Get('pipeline-deploy/download')
+  public async downloadPipeline(@Query() query: DownloadRequestDto): Promise<any> {
+    const filepath = await this.pipeLineDeployService.getFileFullPath(query)
+
+    return filepath;
   }
 
   /**
@@ -51,15 +61,5 @@ export class PipeLineDeployController {
       ...body,
       user_id,
     });
-  }
-
-  /**
-   * 下载部署文件
-   */
-  @Get('pipeline-deploy/download')
-  public async downloadPipeline(@Query() query: DownloadRequestDto): Promise<any> {
-    const filepath = await this.pipeLineDeployService.getFileFullPath(query)
-
-    return filepath;
   }
 }

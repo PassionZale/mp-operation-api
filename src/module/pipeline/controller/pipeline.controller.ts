@@ -9,9 +9,9 @@ import {
   UploadedFile,
   ClassSerializerInterceptor,
 } from '@nestjs/common';
-import { PipeLineService } from './pipeline.service';
-import { PipeLineEntity } from './entity/pipeline.entity';
-import { CreatePipeLineRequestDto } from './dto/request/create-pipeline.request.dto';
+import { PipeLineService } from '../service/pipeline.service';
+import { PipeLineEntity } from '../entity/pipeline.entity';
+import { CreatePipeLineRequestDto } from '../dto/request/create-pipeline.request.dto';
 import { JwtAuthGuard } from '@src/guard/jwt-auth.guard';
 import { RoleGuard } from '@src/guard/role.guard';
 import { Role } from '@src/common/decorator/role.decorator';
