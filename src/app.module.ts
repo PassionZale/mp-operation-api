@@ -11,6 +11,7 @@ import { DatabaseModule } from './database/database.module';
 // MODULE
 import { UserModule } from './module/user/user.module';
 import { AuthModule } from './module/auth/auth.module';
+import { ProjectModule } from './module/project/project.module';
 import { PipeLineModule } from './module/pipeline/pipeline.module';
 
 @Module({
@@ -23,6 +24,7 @@ import { PipeLineModule } from './module/pipeline/pipeline.module';
 
     UserModule,
     AuthModule,
+    ProjectModule,
     PipeLineModule
   ],
   controllers: [],

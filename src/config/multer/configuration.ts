@@ -218,7 +218,7 @@ export const getPublicMulterOptions = (): MulterOptions => {
       file: Express.Multer.File,
       cb: multerOptionsCallBack,
     ): void => {
-      if (file.mimetype.match(/\/(jpg|jpeg|png|gif|mp4|zip))$/)) {
+      if(file.originalname.match(/\.(jpg|jpeg|png|gif|mp4|zip)$/i)) {
         cb(null, true);
       } else {
         cb(
@@ -243,7 +243,7 @@ export const getPublicMulterOptions = (): MulterOptions => {
         file: Express.Multer.File,
         cb: multerDiskStorageDestinationCallBack,
       ): Promise<void> => {
-        const root = multerConfig.pipeline.root;
+        const root = multerConfig.public.root;
 
         const year = moment().get('y');
 
