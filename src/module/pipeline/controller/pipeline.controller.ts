@@ -22,11 +22,19 @@ import { getPipelineMulterOptions } from '@src/config/multer/configuration';
 import { ApiException } from '@src/filter/api-exception.filter';
 import { removeForwardSlash } from '@src/common/helper/path.helper';
 import { desensitization } from '@src/common/helper/sensitive.helper';
+import { PipeLineDeployLogEntity } from '../entity/pipeline-deploy-log.entity';
 
 @Controller()
 @UseInterceptors(ClassSerializerInterceptor)
 export class PipeLineController {
   constructor(private readonly pipeLineService: PipeLineService) {}
+
+  @Get('pipeline/:id/deploys')
+  public async findPipeLineDeploys(
+    @Param('id') id: string,
+  ): Promise<PipeLineDeployLogEntity[]> {
+    return this.pipeLineService.findPipeLineDeploys(id);
+  }
 
   /**
    * 查询指定流水线

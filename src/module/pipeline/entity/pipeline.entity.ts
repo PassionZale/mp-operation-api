@@ -8,6 +8,7 @@ import {
 } from '@src/common/enum/pipeline.enum';
 import { desensitization } from '@src/common/helper/sensitive.helper';
 import { UserEntity } from '@src/module/user/user.entity';
+import { ProjectEntity } from '@src/module/project/project.entity';
 
 /**
  * 流水线
@@ -48,6 +49,11 @@ export class PipeLineEntity {
     default: 1,
   })
   ci_robot: PipeLineCIRobots;
+
+  // 项目
+  @Column('int')
+  project_id: number;
+  project?: ProjectEntity;
 
   // 创建者
   @Column('int')
