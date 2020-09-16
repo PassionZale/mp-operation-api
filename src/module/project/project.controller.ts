@@ -1,17 +1,28 @@
-import { Body, Controller, Get, Param, Post, Put, UploadedFile, UseGuards, UseInterceptors } from "@nestjs/common";
-import { FileInterceptor } from "@nestjs/platform-express";
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Put,
+  UploadedFile,
+  UseGuards,
+  UseInterceptors,
+} from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { RequestUser } from '@src/common/decorator/request-user.decorator';
 
-import { Role } from "@src/common/decorator/role.decorator";
-import { UserRole } from "@src/common/enum/user-role.enum";
-import { removeForwardSlash } from "@src/common/helper/path.helper";
-import { getPublicMulterOptions } from "@src/config/multer/configuration";
-import { ApiException } from "@src/filter/api-exception.filter";
-import { JwtAuthGuard } from "@src/guard/jwt-auth.guard";
-import { RoleGuard } from "@src/guard/role.guard";
-import { CreateProjectRequestDto } from "./dto/request/create-project.request.dto";
-import { EditProjectRequestDto } from "./dto/request/edit-project.request.dto";
-import { ProjectEntity } from "./project.entity";
-import { ProjectService } from "./project.service";
+import { Role } from '@src/common/decorator/role.decorator';
+import { UserRole } from '@src/common/enum/user-role.enum';
+import { removeForwardSlash } from '@src/common/helper/path.helper';
+import { getPublicMulterOptions } from '@src/config/multer/configuration';
+import { ApiException } from '@src/filter/api-exception.filter';
+import { JwtAuthGuard } from '@src/guard/jwt-auth.guard';
+import { RoleGuard } from '@src/guard/role.guard';
+import { CreateProjectRequestDto } from './dto/request/create-project.request.dto';
+import { EditProjectRequestDto } from './dto/request/edit-project.request.dto';
+import { ProjectEntity } from './project.entity';
+import { ProjectService } from './project.service';
 
 @Controller()
 export class ProjectController {
@@ -24,7 +35,7 @@ export class ProjectController {
   public async uploadLogo(
     @UploadedFile() file: Express.Multer.File,
   ): Promise<string> {
-    if(file === undefined) {
+    if (file === undefined) {
       throw new ApiException('上传文件不能为空');
     }
 
@@ -36,8 +47,11 @@ export class ProjectController {
   @Post('project')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Role(UserRole.DEVELOPER)
-  public async create(@Body() body: CreateProjectRequestDto): Promise<ProjectEntity> {
-    const project = await this.projectService.create(body);
+  public async create(
+    @RequestUser('id') user_id: number,
+    @Body() body: CreateProjectRequestDto,
+  ): Promise<ProjectEntity> {
+    const project = await this.projectService.create({ user_id, ...body });
 
     return project;
   }
@@ -45,10 +59,13 @@ export class ProjectController {
   @Put('project/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Role(UserRole.DEVELOPER)
-  public async update(@Param() id: number, @Body() body: EditProjectRequestDto): Promise<boolean> {
+  public async update(
+    @Param() id: number,
+    @Body() body: EditProjectRequestDto,
+  ): Promise<boolean> {
     const project = await this.projectService.findOne(id);
 
-    if(!project) throw new ApiException('项目不存在');
+    if (!project) throw new ApiException('项目不存在');
 
     return this.projectService.update(id, body);
   }
@@ -59,7 +76,7 @@ export class ProjectController {
   public async findOne(@Param() id: number): Promise<ProjectEntity> {
     const project = await this.projectService.findOne(id);
 
-    if(!project) throw new ApiException('项目不存在');
+    if (!project) throw new ApiException('项目不存在');
 
     return project;
   }

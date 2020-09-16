@@ -9,4 +9,6 @@ export class CreateProjectRequestDto {
 
   @IsNotEmpty({ message: "项目图标不能为空" })
   logo: string;
+
+  user_id?: number;
 }

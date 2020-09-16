@@ -1,5 +1,6 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 import { DateValueTransformer } from '@src/database/database.transformer';
+import { UserEntity } from '@src/module/user/user.entity';
 
 @Entity('project')
 export class ProjectEntity {
@@ -17,6 +18,11 @@ export class ProjectEntity {
   // 项目图标
   @Column('varchar')
   logo: string;
+
+  // 创建者
+  @Column('int')
+  user_id: number;
+  user?: UserEntity;
 
   // 创建时间
   @Column('datetime', {
