@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
-import { AppConfigModule } from '@src/config/app/config.module';
 import { PipeLineEntity } from './entity/pipeline.entity';
 import { PipeLineDeployLogEntity } from './entity/pipeline-deploy-log.entity';
 import { PipeLineReleaseLogEntity } from './entity/pipeline-release-log.entity';
@@ -17,7 +16,6 @@ import { PipeLineDeployController } from './controller/pipeline-deploy.controlle
       PipeLineDeployLogEntity,
       PipeLineReleaseLogEntity,
     ]),
-    AppConfigModule
   ],
   providers: [PipeLineService, PipeLineDeployService],
   controllers: [PipeLineController, PipeLineDeployController],
