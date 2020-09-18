@@ -8,6 +8,5 @@ export default registerAs('typeorm', () => ({
   password: process.env.TYPEORM_PASSWORD,
   database: process.env.TYPEORM_DATABASE,
   entities: process.env.TYPEORM_ENTITIES,
-  logging: process.env.TYPEORM_LOGGING,
-  synchronize: process.env.APP_ENV === 'development' ? true : false,
+  logging: process.env.TYPEORM_LOGGING
 }));

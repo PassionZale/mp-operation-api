@@ -1,7 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationError } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import * as fs from 'fs';
 import * as moment from 'moment-timezone';
 
 import { AppModule } from './app.module';
@@ -11,7 +10,7 @@ import { ApiException } from './filter/api-exception.filter';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { AnyExceptionFilter } from './filter/any-exception.filter';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
-import { findOrCreateOrmConfigSync } from './common/helper/typeorm.hepler';
+import { updateOrmConfigFileSync } from './common/helper/typeorm.hepler';
 import { TypeormConfigService } from './config/typeorm/config.service';
 
 /**
@@ -49,7 +48,7 @@ async function bootstrap() {
   const appConfig: AppConfigService = app.get(AppConfigService);
 
   // 初始化 ormconfig.json
-  findOrCreateOrmConfigSync(typeormConfig.configs);
+  updateOrmConfigFileSync(typeormConfig.configs);
 
   // swagger
   if (appConfig.env === 'development') {

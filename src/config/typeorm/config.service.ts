@@ -8,6 +8,10 @@ export class TypeormConfigService {
 
   get configs(): TypeOrmModuleOptions {
     return {
+      // 项目中使用 migrations，自动同步务必设置为 false
+      // 不允许更改此配置项
+      synchronize: false,
+
       // .env settings
       type: this.type as 'mysql' | 'mariadb',
       host: this.host,
@@ -18,13 +22,9 @@ export class TypeormConfigService {
       entities: this.entities,
       logging: this.logging,
 
-      // APP_ENV === 'development' ? true : false
-      // TODO 接入 migration 后，强制其为 false
-      // synchronize: this.synchronize,
-
       // migration settings
       migrationsTableName: 'migration',
-      migrations: ['dist/database/migration/*{.ts,.js}'],
+      migrations: ['dist/database/migration/**/*{.ts,.js}'],
       cli: {
         migrationsDir: 'src/database/migration',
       },
@@ -61,9 +61,5 @@ export class TypeormConfigService {
 
   get logging(): boolean {
     return this.configService.get<string>('typeorm.logging') === 'true';
-  }
-
-  get synchronize(): boolean {
-    return this.configService.get<boolean>('typeorm.synchronize');
   }
 }
