@@ -42,15 +42,16 @@ async function bootstrap() {
   // 全局异常拦截
   app.useGlobalFilters(new AnyExceptionFilter(), new HttpExceptionFilter());
 
-  // 读取 typeormConfig
+  // TypeormConfig
   const typeormConfig: TypeormConfigService = app.get(TypeormConfigService);
-  // 读取 appConfig
+  // AppConfig
   const appConfig: AppConfigService = app.get(AppConfigService);
 
   // 初始化 ormconfig.json
   updateOrmConfigFileSync(typeormConfig.configs);
 
   // swagger
+  // TODO swagger 注解
   if (appConfig.env === 'development') {
     const options = new DocumentBuilder()
       .setTitle('Operator API')

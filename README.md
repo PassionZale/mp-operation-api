@@ -8,7 +8,12 @@ cp .env.sample .env
 
 ## 运行
 ```bash
+npm install
+
 npm run start:dev
+
+# 初始化数据库迁移
+npm run typeorm:migrate
 ```
 
 ## 依赖说明
