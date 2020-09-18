@@ -19,7 +19,15 @@ export class TypeormConfigService {
       logging: this.logging,
 
       // APP_ENV === 'development' ? true : false
-      synchronize: this.synchronize
+      // TODO 接入 migration 后，强制其为 false
+      // synchronize: this.synchronize,
+
+      // migration settings
+      migrationsTableName: 'migration',
+      migrations: ['dist/database/migration/*{.ts,.js}'],
+      cli: {
+        migrationsDir: 'src/database/migration',
+      },
     };
   }
 

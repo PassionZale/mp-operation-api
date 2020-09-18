@@ -1,6 +1,7 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationError } from '@nestjs/common';
-import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as fs from 'fs';
 import * as moment from 'moment-timezone';
 
 import { AppModule } from './app.module';
@@ -10,6 +11,8 @@ import { ApiException } from './filter/api-exception.filter';
 import { TransformInterceptor } from './interceptor/transform.interceptor';
 import { AnyExceptionFilter } from './filter/any-exception.filter';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
+import { findOrCreateOrmConfigSync } from './common/helper/typeorm.hepler';
+import { TypeormConfigService } from './config/typeorm/config.service';
 
 /**
  * 设置默认时区为东八区
@@ -40,16 +43,22 @@ async function bootstrap() {
   // 全局异常拦截
   app.useGlobalFilters(new AnyExceptionFilter(), new HttpExceptionFilter());
 
-  // 读取 appConfig 端口配置项
+  // 读取 typeormConfig
+  const typeormConfig: TypeormConfigService = app.get(TypeormConfigService);
+  // 读取 appConfig
   const appConfig: AppConfigService = app.get(AppConfigService);
 
-  if(appConfig.env === 'development') {
+  // 初始化 ormconfig.json
+  findOrCreateOrmConfigSync(typeormConfig.configs);
+
+  // swagger
+  if (appConfig.env === 'development') {
     const options = new DocumentBuilder()
-    .setTitle('Operator API')
-    .setDescription('The Operator API description')
-    .setVersion('1.0')
-    .addTag('operator')
-    .build();
+      .setTitle('Operator API')
+      .setDescription('The Operator API description')
+      .setVersion('1.0')
+      .addTag('operator')
+      .build();
     const document = SwaggerModule.createDocument(app, options);
     SwaggerModule.setup('api/document', app, document);
   }
@@ -58,4 +67,3 @@ async function bootstrap() {
 }
 
 bootstrap();
-
