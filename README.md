@@ -45,3 +45,8 @@ npm install --save class-transformer class-validator
 ```bash
 npm install --save moment-timezone
 ```
+
+### API DOCUMENT
+```bash
+npm install --save @nestjs/swagger swagger-ui-express
+```

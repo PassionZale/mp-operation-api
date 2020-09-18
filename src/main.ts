@@ -1,5 +1,6 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationError } from '@nestjs/common';
+import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger'
 import * as moment from 'moment-timezone';
 
 import { AppModule } from './app.module';
@@ -41,6 +42,17 @@ async function bootstrap() {
 
   // 读取 appConfig 端口配置项
   const appConfig: AppConfigService = app.get(AppConfigService);
+
+  if(appConfig.env === 'development') {
+    const options = new DocumentBuilder()
+    .setTitle('Operator API')
+    .setDescription('The Operator API description')
+    .setVersion('1.0')
+    .addTag('operator')
+    .build();
+    const document = SwaggerModule.createDocument(app, options);
+    SwaggerModule.setup('api/document', app, document);
+  }
 
   await app.listen(appConfig.port);
 }
