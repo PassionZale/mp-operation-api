@@ -19,7 +19,12 @@ import { TypeormConfigService } from './config.service';
         TYPEORM_PASSWORD: Joi.string().default('root'),
         TYPEORM_DATABASE: Joi.string().default('lingzhi'),
         TYPEORM_ENTITIES: Joi.string().default('dist/**/**.entity{.ts,.js}'),
-        TYPEORM_LOGGING: Joi.string().valid('true', 'false').default('false')
+        TYPEORM_LOGGING: Joi.string()
+          .valid('true', 'false')
+          .default('false'),
+        TYPEORM_LOGGER: Joi.string()
+          .valid('advanced-console', 'simple-console', 'file', 'debug')
+          .default('advanced-console'),
       }),
     }),
   ],

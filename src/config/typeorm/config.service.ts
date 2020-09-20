@@ -2,12 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
+type logger = "advanced-console" | "simple-console" | "file" | "debug";
+
 @Injectable()
 export class TypeormConfigService {
   constructor(private configService: ConfigService) {}
 
   get configs(): TypeOrmModuleOptions {
     return {
+      timezone: '+08:00',
+
       // 项目中使用 migrations，自动同步务必设置为 false
       // 不允许更改此配置项
       synchronize: false,
@@ -21,6 +25,7 @@ export class TypeormConfigService {
       database: this.database,
       entities: this.entities,
       logging: this.logging,
+      logger: this.logger,
 
       // migration settings
       migrationsTableName: 'migration',
@@ -61,5 +66,9 @@ export class TypeormConfigService {
 
   get logging(): boolean {
     return this.configService.get<string>('typeorm.logging') === 'true';
+  }
+
+  get logger(): logger {
+    return this.configService.get<logger>('typeorm.logger');
   }
 }
