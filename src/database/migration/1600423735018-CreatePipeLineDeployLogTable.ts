@@ -11,10 +11,11 @@ export class CreatePipeLineDeployLogTable1600423735018
         columns: [
           {
             name: 'id',
-            type: 'int',
+            type: 'varchar',
+            length: '36',
             isPrimary: true,
             isGenerated: true,
-            generationStrategy: 'increment',
+            generationStrategy: 'uuid',
           },
           {
             name: 'desc',
@@ -28,8 +29,7 @@ export class CreatePipeLineDeployLogTable1600423735018
           },
           {
             name: 'pipeline_id',
-            type: 'varchar',
-            length: '36',
+            type: 'int',
             comment: '流水线 ID',
           },
           {

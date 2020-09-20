@@ -15,7 +15,7 @@ export class PipeLineService {
     private readonly pipeLineDeployLogRepository: Repository<PipeLineDeployLogEntity>,
   ) {}
 
-  public async findPipeLine(id: string): Promise<PipeLineEntity> {
+  public async findPipeLine(id: number): Promise<PipeLineEntity> {
     return this.pipeLineRepository.findOne(id);
   }
 
@@ -23,7 +23,7 @@ export class PipeLineService {
     return this.pipeLineRepository.find();
   }
 
-  public async findPipeLineDeploys(id: string): Promise<PipeLineDeployLogEntity[]> {
+  public async findPipeLineDeploys(id: number): Promise<PipeLineDeployLogEntity[]> {
     const deploys = this.pipeLineDeployLogRepository.find({
       where: { pipeline_id: id }
     })

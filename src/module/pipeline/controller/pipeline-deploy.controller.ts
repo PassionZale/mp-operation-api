@@ -75,7 +75,7 @@ export class PipeLineDeployController {
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Role(UserRole.DEVELOPER)
   public async findPipeLineDeploy(
-    @Param('id') id: number,
+    @Param('id') id: string,
   ): Promise<PipeLineDeployLogEntity> {
     return this.pipeLineDeployService.findOne(id);
   }

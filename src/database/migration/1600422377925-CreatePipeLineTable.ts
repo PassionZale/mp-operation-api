@@ -11,11 +11,10 @@ export class CreatePipeLineTable1600422377925 implements MigrationInterface {
         columns: [
           {
             name: 'id',
-            type: 'varchar',
-            length: '36',
+            type: 'int',
             isPrimary: true,
             isGenerated: true,
-            generationStrategy: 'uuid',
+            generationStrategy: 'increment',
           },
           {
             name: 'name',

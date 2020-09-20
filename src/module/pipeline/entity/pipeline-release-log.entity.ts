@@ -9,12 +9,12 @@ import { UserEntity } from '@src/module/user/user.entity';
  */
 @Entity('pipeline_release_log')
 export class PipeLineReleaseLogEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   // 流水线部署 ID
-  @Column('int')
-  deploy_id: number;
+  @Column('uuid')
+  deploy_id: string;
   deploy_log?: PipeLineDeployLogEntity;
 
   // 提交者

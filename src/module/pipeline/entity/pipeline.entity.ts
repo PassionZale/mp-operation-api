@@ -15,8 +15,8 @@ import { ProjectEntity } from '@src/module/project/project.entity';
  */
 @Entity('pipeline')
 export class PipeLineEntity {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryGeneratedColumn()
+  id: number;
 
   // 名称
   @Column('varchar', { length: 100 })

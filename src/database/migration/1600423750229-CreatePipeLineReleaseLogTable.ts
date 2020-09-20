@@ -11,10 +11,11 @@ export class CreatePipeLineReleaseLogTable1600423750229
         columns: [
           {
             name: 'id',
-            type: 'int',
+            type: 'varchar',
+            length: '36',
             isPrimary: true,
             isGenerated: true,
-            generationStrategy: 'increment',
+            generationStrategy: 'uuid',
           },
           // TODO 设计其他字段
           {

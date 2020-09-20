@@ -9,8 +9,8 @@ import { PipeLineEntity } from './pipeline.entity';
  */
 @Entity('pipeline_deploy_log')
 export class PipeLineDeployLogEntity {
-  @PrimaryGeneratedColumn()
-  id: number;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   // 描述
   @Column('text')
@@ -22,7 +22,7 @@ export class PipeLineDeployLogEntity {
 
   // 流水线 ID
   @Column()
-  pipeline_id: string;
+  pipeline_id: number;
   pipeline?: PipeLineEntity;
 
   // 部署者

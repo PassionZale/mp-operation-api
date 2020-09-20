@@ -16,7 +16,7 @@ export class PipeLineDeployService {
     >,
   ) {}
 
-  public async findOne(id: number): Promise<any> {
+  public async findOne(id: string): Promise<any> {
     const pipeLineDeploy = await this.pipeLineDeployLogRepository
       .createQueryBuilder('pipeline_deploy_log')
       .leftJoinAndMapOne(

@@ -31,7 +31,7 @@ export class PipeLineController {
 
   @Get('pipeline/:id/deploys')
   public async findPipeLineDeploys(
-    @Param('id') id: string,
+    @Param('id') id: number,
   ): Promise<PipeLineDeployLogEntity[]> {
     return this.pipeLineService.findPipeLineDeploys(id);
   }
@@ -41,7 +41,7 @@ export class PipeLineController {
    * @param id
    */
   @Get('pipeline/:id')
-  public async findPipeLine(@Param('id') id: string): Promise<PipeLineEntity> {
+  public async findPipeLine(@Param('id') id: number): Promise<PipeLineEntity> {
     return this.pipeLineService.findPipeLine(id);
   }
 
