@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { ValidationError } from '@nestjs/common';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import * as serveStatic from 'serve-static';
+import * as path from 'path';
 import * as moment from 'moment-timezone';
 
 import { AppModule } from './app.module';
@@ -24,6 +26,22 @@ async function bootstrap() {
 
   // 全局路由前缀
   app.setGlobalPrefix('api');
+
+  // avatar static serve
+  app.use(
+    '/media/avatar',
+    serveStatic(path.join(__dirname, '../media/avatar/'), {
+      maxAge: '1d',
+    }),
+  );
+
+  // public static serve
+  app.use(
+    '/media/public',
+    serveStatic(path.join(__dirname, '../media/public/'), {
+      maxAge: '1d',
+    }),
+  );
 
   // 全局管道验证
   app.useGlobalPipes(
