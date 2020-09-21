@@ -7,6 +7,7 @@ import {
   IsIn,
 } from 'class-validator';
 import { UserRole } from '@src/common/enum/user-role.enum';
+import { UserStatus } from '@src/common/enum/user-status.enum';
 
 export class CreateUserRequestDto {
   /**
@@ -20,7 +21,10 @@ export class CreateUserRequestDto {
   /**
    * 角色
    */
-  @IsIn([UserRole.ADMIN, UserRole.DEVELOPER, UserRole.STAFF, UserRole.VISITOR], { message: '角色不存在' })
+  @IsIn(
+    [UserRole.ADMIN, UserRole.DEVELOPER, UserRole.STAFF, UserRole.VISITOR],
+    { message: '角色不存在' },
+  )
   @IsOptional()
   readonly role?: number;
   /**
@@ -48,4 +52,18 @@ export class CreateUserRequestDto {
   })
   @IsNotEmpty({ message: '密码不能为空' })
   readonly password: string;
+  /**
+   * 用户状态
+   */
+  @IsIn(
+    [
+      UserStatus.ACTIVED,
+      UserStatus.FORZEN,
+      UserStatus.INACTIVATED,
+      UserStatus.LOSED,
+    ],
+    { message: '状态不存在' },
+  )
+  @IsOptional()
+  readonly status?: UserStatus;
 }
