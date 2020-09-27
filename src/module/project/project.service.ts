@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
 import { CreateProjectRequestDto } from './dto/request/create-project.request.dto';
-import { EditProjectRequestDto } from './dto/request/edit-project.request.dto';
+import { UpdateProjectRequestDto } from './dto/request/update-project.request.dto';
 
 import { ProjectEntity } from './project.entity';
 
@@ -31,9 +31,9 @@ export class ProjectService {
     return projects;
   }
 
-  public async update(id: number, dto: EditProjectRequestDto): Promise<boolean> {
+  public async update(id: number, dto: UpdateProjectRequestDto): Promise<boolean> {
     const updateResult: UpdateResult = await this.projectRepository.update(id, dto);
 
-    return !!updateResult.affected;;
+    return !!updateResult.affected;
   }
 }

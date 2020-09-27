@@ -20,7 +20,7 @@ import { ApiException } from '@src/filter/api-exception.filter';
 import { JwtAuthGuard } from '@src/guard/jwt-auth.guard';
 import { RoleGuard } from '@src/guard/role.guard';
 import { CreateProjectRequestDto } from './dto/request/create-project.request.dto';
-import { EditProjectRequestDto } from './dto/request/edit-project.request.dto';
+import { UpdateProjectRequestDto } from './dto/request/update-project.request.dto';
 import { ProjectEntity } from './project.entity';
 import { ProjectService } from './project.service';
 
@@ -61,7 +61,7 @@ export class ProjectController {
   @Role(UserRole.DEVELOPER)
   public async update(
     @Param() id: number,
-    @Body() body: EditProjectRequestDto,
+    @Body() body: UpdateProjectRequestDto,
   ): Promise<boolean> {
     const project = await this.projectService.findOne(id);
 

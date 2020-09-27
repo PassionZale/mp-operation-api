@@ -12,21 +12,36 @@ export class PipeLineService {
     @InjectRepository(PipeLineEntity)
     private readonly pipeLineRepository: Repository<PipeLineEntity>,
     @InjectRepository(PipeLineDeployLogEntity)
-    private readonly pipeLineDeployLogRepository: Repository<PipeLineDeployLogEntity>,
+    private readonly pipeLineDeployLogRepository: Repository<
+      PipeLineDeployLogEntity
+    >,
   ) {}
 
   public async findPipeLine(id: number): Promise<PipeLineEntity> {
-    return this.pipeLineRepository.findOne(id);
+    const pipeline = await this.pipeLineRepository
+      .createQueryBuilder('pp')
+      .where('pp.id = :id', { id })
+      .leftJoinAndMapOne('pp.project', 'project', 'p', 'p.id = pp.project_id')
+      .getOne();
+
+    return pipeline;
   }
 
   public async findPipeLines(): Promise<PipeLineEntity[]> {
-    return this.pipeLineRepository.find();
+    const pipelines = await this.pipeLineRepository
+      .createQueryBuilder('pp')
+      .leftJoinAndMapOne('pp.project', 'project', 'p', 'p.id = pp.project_id')
+      .getMany();
+
+    return pipelines;
   }
 
-  public async findPipeLineDeploys(id: number): Promise<PipeLineDeployLogEntity[]> {
+  public async findPipeLineDeploys(
+    id: number,
+  ): Promise<PipeLineDeployLogEntity[]> {
     const deploys = this.pipeLineDeployLogRepository.find({
-      where: { pipeline_id: id }
-    })
+      where: { pipeline_id: id },
+    });
 
     return deploys;
   }

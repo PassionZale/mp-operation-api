@@ -1,6 +1,6 @@
 import { IsNotEmpty } from "class-validator";
 
-export class EditProjectRequestDto {
+export class UpdateProjectRequestDto {
   @IsNotEmpty({ message: "项目名不能为空" })
   name: string;
 

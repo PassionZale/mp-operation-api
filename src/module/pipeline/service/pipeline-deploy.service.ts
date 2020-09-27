@@ -1,11 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
+import * as moment from 'moment-timezone';
 
 import { ApiException } from '@src/filter/api-exception.filter';
 import { DownloadRequestDto } from '../dto/request/download.request.dto';
 import { PipeLineDeployLogEntity } from '../entity/pipeline-deploy-log.entity';
 import { CreateDeployLogRequestDto } from '../dto/request/create-deploy-log.request.dto';
+import { UpdateDeployLogRequestDto } from '../dto/request/update-deploy-log.request.dto';
 
 @Injectable()
 export class PipeLineDeployService {
@@ -25,6 +27,12 @@ export class PipeLineDeployService {
         'u',
         'u.id = pipeline_deploy_log.user_id',
       )
+      .leftJoinAndMapOne(
+        'pipeline_deploy_log.pipeline',
+        'pipeline',
+        'p',
+        'p.id = pipeline_deploy_log.pipeline_id',
+      )
       .where('pipeline_deploy_log.id = :id', { id })
       .getOne();
 
@@ -40,6 +48,12 @@ export class PipeLineDeployService {
         'u',
         'u.id = pipeline_deploy_log.user_id',
       )
+      .leftJoinAndMapOne(
+        'pipeline_deploy_log.pipeline',
+        'pipeline',
+        'p',
+        'p.id = pipeline_deploy_log.pipeline_id',
+      )
       .getMany();
 
     return pipeLineDeploys;
@@ -49,6 +63,24 @@ export class PipeLineDeployService {
     dto: CreateDeployLogRequestDto,
   ): Promise<PipeLineDeployLogEntity> {
     return this.pipeLineDeployLogRepository.save(dto);
+  }
+
+  public async update(
+    id: string,
+    dto: UpdateDeployLogRequestDto,
+  ): Promise<boolean> {
+    const deployed_at = (moment().format() as unknown) as Date;
+
+    const pipelineDeploy = await this.findOne(id);
+
+    if (!pipelineDeploy) throw new ApiException('部署记录不存在');
+
+    const updateResult: UpdateResult = await this.pipeLineDeployLogRepository.update(
+      id,
+      { ...dto, deployed_at },
+    );
+
+    return !!updateResult.affected;
   }
 
   public async getDeployInfo(

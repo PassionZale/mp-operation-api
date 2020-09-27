@@ -7,6 +7,7 @@ import {
   Query,
   UseGuards,
   Res,
+  Put,
 } from '@nestjs/common';
 import { Response } from 'express';
 import * as moment from 'moment-timezone';
@@ -17,6 +18,7 @@ import { UserRole } from '@src/common/enum/user-role.enum';
 import { JwtAuthGuard } from '@src/guard/jwt-auth.guard';
 import { RoleGuard } from '@src/guard/role.guard';
 import { CreateDeployLogRequestDto } from '../dto/request/create-deploy-log.request.dto';
+import { UpdateDeployLogRequestDto } from '../dto/request/update-deploy-log.request.dto';
 import { DownloadRequestDto } from '../dto/request/download.request.dto';
 import { PipeLineDeployLogEntity } from '../entity/pipeline-deploy-log.entity';
 import { PipeLineDeployService } from '../service/pipeline-deploy.service';
@@ -78,6 +80,20 @@ export class PipeLineDeployController {
     @Param('id') id: string,
   ): Promise<PipeLineDeployLogEntity> {
     return this.pipeLineDeployService.findOne(id);
+  }
+
+  /**
+   * 更新部署记录
+   */
+  @Put('pipeline-deploy/:id')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Role(UserRole.DEVELOPER)
+  public async updatePipeLineDeploy(
+    @Param('id') id: string,
+    @RequestUser('id') user_id: number,
+    @Body() body: UpdateDeployLogRequestDto,
+  ): Promise<boolean> {
+    return this.pipeLineDeployService.update(id, { ...body, user_id });
   }
 
   /**
