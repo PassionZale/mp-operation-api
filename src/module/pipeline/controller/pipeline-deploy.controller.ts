@@ -11,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { Response } from 'express';
 import * as moment from 'moment-timezone';
+import * as fs from 'fs';
 
 import { RequestUser } from '@src/common/decorator/request-user.decorator';
 import { Role } from '@src/common/decorator/role.decorator';
@@ -22,8 +23,10 @@ import { UpdateDeployLogRequestDto } from '../dto/request/update-deploy-log.requ
 import { DownloadRequestDto } from '../dto/request/download.request.dto';
 import { PipeLineDeployLogEntity } from '../entity/pipeline-deploy-log.entity';
 import { PipeLineDeployService } from '../service/pipeline-deploy.service';
-import { ApiException } from '@src/filter/api-exception.filter';
 import { FILE_NAME_FORMAT } from '@src/common/constant/format.constant';
+import { Mime } from '@src/common/enum/mime.enum';
+import { Stream } from 'stream';
+import { ApiException } from '@src/filter/api-exception.filter';
 
 @Controller()
 export class PipeLineDeployController {
@@ -44,9 +47,9 @@ export class PipeLineDeployController {
    */
   @Get('pipeline-deploy/download')
   public async downloadPipeline(
-    @Res() res: Response,
+    @Res() response: Response,
     @Query() query: DownloadRequestDto,
-  ): Promise<any> {
+  ): Promise<Stream> {
     const deploy = await this.pipeLineDeployService.getDeployInfo(query);
 
     const {
@@ -56,17 +59,22 @@ export class PipeLineDeployController {
       project_path,
     } = deploy;
 
-    res.download(
-      project_path,
-      `${name}-${moment(deployed_at).format(
+    try {
+      await fs.promises.access(project_path, fs.constants.R_OK);
+
+      const filename = `${name}-${moment(deployed_at).format(
         FILE_NAME_FORMAT,
-      )}-${pipeline_id}.zip`,
-      (error: Error): void => {
-        if (error) {
-          throw new ApiException(error.message);
-        }
-      },
-    );
+      )}-${pipeline_id}.zip`;
+
+      response.setHeader('Content-type', Mime.zip);
+      response.setHeader(
+        'Content-Disposition',
+        `attachment; filename=${filename}`,
+      );
+      return fs.createReadStream(project_path).pipe(response);
+    } catch (error) {
+      throw new ApiException('文件无法被读取');
+    }
   }
 
   /**
