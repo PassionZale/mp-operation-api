@@ -5,6 +5,7 @@ import { Repository } from 'typeorm';
 import { PipeLineEntity } from '../entity/pipeline.entity';
 import { CreatePipeLineRequestDto } from '../dto/request/create-pipeline.request.dto';
 import { PipeLineDeployLogEntity } from '../entity/pipeline-deploy-log.entity';
+import { SelectPipeLineRequestDto } from '../dto/request/select-pipelines.request.dot';
 
 @Injectable()
 export class PipeLineService {
@@ -27,11 +28,20 @@ export class PipeLineService {
     return pipeline;
   }
 
-  public async findPipeLines(): Promise<PipeLineEntity[]> {
-    const pipelines = await this.pipeLineRepository
+  public async findPipeLines(
+    query: SelectPipeLineRequestDto,
+  ): Promise<PipeLineEntity[]> {
+    const { project_id } = query;
+
+    const db = await this.pipeLineRepository
       .createQueryBuilder('pp')
-      .leftJoinAndMapOne('pp.project', 'project', 'p', 'p.id = pp.project_id')
-      .getMany();
+      .leftJoinAndMapOne('pp.project', 'project', 'p', 'p.id = pp.project_id');
+
+    if (project_id) {
+      db.where('pp.project_id = :project_id', { project_id });
+    }
+
+    const pipelines = await db.getMany();
 
     return pipelines;
   }

@@ -8,6 +8,7 @@ import {
   UseInterceptors,
   UploadedFile,
   ClassSerializerInterceptor,
+  Query,
 } from '@nestjs/common';
 import { PipeLineService } from '../service/pipeline.service';
 import { PipeLineEntity } from '../entity/pipeline.entity';
@@ -23,6 +24,7 @@ import { ApiException } from '@src/filter/api-exception.filter';
 import { removeForwardSlash } from '@src/common/helper/path.helper';
 import { desensitization } from '@src/common/helper/sensitive.helper';
 import { PipeLineDeployLogEntity } from '../entity/pipeline-deploy-log.entity';
+import { SelectPipeLineRequestDto } from '../dto/request/select-pipelines.request.dot';
 
 @Controller()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -49,8 +51,11 @@ export class PipeLineController {
    * 查询流水线列表
    */
   @Get('pipelines')
-  public async findPipeLines(): Promise<PipeLineEntity[]> {
-    return this.pipeLineService.findPipeLines();
+  public async findPipeLines(
+    @Query() query: SelectPipeLineRequestDto,
+  ): Promise<PipeLineEntity[]> {
+    console.log(query);
+    return this.pipeLineService.findPipeLines(query);
   }
 
   /**
