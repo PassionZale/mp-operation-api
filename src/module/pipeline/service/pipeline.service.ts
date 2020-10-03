@@ -1,11 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, UpdateResult } from 'typeorm';
+import * as moment from 'moment-timezone';
 
 import { PipeLineEntity } from '../entity/pipeline.entity';
 import { CreatePipeLineRequestDto } from '../dto/request/create-pipeline.request.dto';
 import { PipeLineDeployLogEntity } from '../entity/pipeline-deploy-log.entity';
 import { SelectPipeLineRequestDto } from '../dto/request/select-pipelines.request.dot';
+import { UpdatePipeLineRequestDto } from '../dto/request/update-pipeline.request.dto';
+import { ApiException } from '@src/filter/api-exception.filter';
 
 @Injectable()
 export class PipeLineService {
@@ -44,6 +47,21 @@ export class PipeLineService {
     const pipelines = await db.getMany();
 
     return pipelines;
+  }
+
+  public async updatePipeLine(id: number, dto: UpdatePipeLineRequestDto): Promise<boolean> {
+    const updated_at = (moment().format() as unknown) as Date;
+
+    const pipeline = await this.findPipeLine(id);
+
+    if(!pipeline) throw new ApiException('流水线不存在');
+
+    const updateResult: UpdateResult = await this.pipeLineRepository.update(
+      id,
+      { ...dto, updated_at },
+    );
+
+    return !!updateResult.affected;
   }
 
   public async findPipeLineDeploys(

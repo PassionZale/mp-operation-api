@@ -9,6 +9,7 @@ import {
   UploadedFile,
   ClassSerializerInterceptor,
   Query,
+  Put,
 } from '@nestjs/common';
 import { PipeLineService } from '../service/pipeline.service';
 import { PipeLineEntity } from '../entity/pipeline.entity';
@@ -25,6 +26,7 @@ import { removeForwardSlash } from '@src/common/helper/path.helper';
 import { desensitization } from '@src/common/helper/sensitive.helper';
 import { PipeLineDeployLogEntity } from '../entity/pipeline-deploy-log.entity';
 import { SelectPipeLineRequestDto } from '../dto/request/select-pipelines.request.dot';
+import { UpdatePipeLineRequestDto } from '../dto/request/update-pipeline.request.dto';
 
 @Controller()
 @UseInterceptors(ClassSerializerInterceptor)
@@ -81,6 +83,22 @@ export class PipeLineController {
     pipeLine.private_key = desensitization(private_key);
 
     return pipeLine;
+  }
+
+  /**
+   * 修改流水线
+   * @param created_by
+   * @param body
+   */
+  @Put('pipeline/:id')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Role(UserRole.ADMIN)
+  public async updatePipeLine(
+    @RequestUser('id') user_id: number,
+    @Param('id') id: number,
+    @Body() body: UpdatePipeLineRequestDto,
+  ): Promise<boolean> {
+    return this.pipeLineService.updatePipeLine(id, { ...body, user_id });
   }
 
   /**
