@@ -40,6 +40,14 @@ export class PipeLineController {
     return this.pipeLineService.findPipeLineDeploys(id);
   }
 
+  @Get('pipeline/:id/deploy')
+  public async findPipeLineDeploy(
+    @Param('id') id: number,
+  ): Promise<PipeLineDeployLogEntity> {
+    return this.pipeLineService.findPipeLineDeploy(id);
+  }
+
+
   /**
    * 查询指定流水线
    * @param id
@@ -53,9 +61,8 @@ export class PipeLineController {
    * 查询流水线列表
    */
   @Get('pipelines')
-  public async findPipeLines(
-    @Query() query: SelectPipeLineRequestDto,
-  ): Promise<PipeLineEntity[]> {
+  public async findPipeLines( @Query() query: SelectPipeLineRequestDto,
+     ): Promise<PipeLineEntity[]> {
     console.log(query);
     return this.pipeLineService.findPipeLines(query);
   }

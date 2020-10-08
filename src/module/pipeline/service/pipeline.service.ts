@@ -36,7 +36,7 @@ export class PipeLineService {
   ): Promise<PipeLineEntity[]> {
     const { project_id } = query;
 
-    const db = await this.pipeLineRepository
+    const db = this.pipeLineRepository
       .createQueryBuilder('pp')
       .leftJoinAndMapOne('pp.project', 'project', 'p', 'p.id = pp.project_id');
 
@@ -62,6 +62,17 @@ export class PipeLineService {
     );
 
     return !!updateResult.affected;
+  }
+
+  public async findPipeLineDeploy(
+    id: number,
+  ): Promise<PipeLineDeployLogEntity> {
+    const deploys = this.pipeLineDeployLogRepository.findOne({
+      where: { pipeline_id: id },
+      order: { deployed_at: "DESC" }
+    });
+
+    return deploys;
   }
 
   public async findPipeLineDeploys(
