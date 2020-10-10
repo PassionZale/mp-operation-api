@@ -6,6 +6,7 @@ Dockerfile
 .git
 
 .env
+ormconfig.json
 
 logs/
 npm-debug.log
