@@ -8,6 +8,7 @@ import { JwtConfigService } from './config.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath: process.env.ENV_FILE_PATH || ".env",
       load: [configuration],
       validationSchema: Joi.object({
         JWT_SECRET: Joi.string().default('jwt secret'),

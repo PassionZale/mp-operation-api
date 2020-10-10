@@ -8,6 +8,7 @@ import { TypeormConfigService } from './config.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath: process.env.ENV_FILE_PATH || ".env",
       load: [configuration],
       validationSchema: Joi.object({
         TYPEORM_TYPE: Joi.string()

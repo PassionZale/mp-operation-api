@@ -8,6 +8,7 @@ import { AppConfigService } from './config.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath: process.env.ENV_FILE_PATH || ".env",
       load: [configuration],
       validationSchema: Joi.object({
         APP_ENV: Joi.string()
