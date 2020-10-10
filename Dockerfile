@@ -8,7 +8,7 @@ RUN npm install --only=development
 
 COPY . .
 
-RUN npm run build
+RUN npm run prebuild && npm run build
 
 FROM node:12.13-alpine AS production
 
@@ -27,4 +27,4 @@ COPY --from=development /usr/src/app/dist ./dist
 
 EXPOSE 3000
 
-CMD ["npm", "run", "start:prod"]
+CMD ["sh", "-c", "npm run typeorm:migrate && npm run start:prod"]
