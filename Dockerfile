@@ -1,30 +1,19 @@
-FROM node:12.13-alpine AS development
+FROM node:12.13-alpine
+
+RUN mkdir -p /usr/src/app/node_modules && chown -R node:node /usr/src/app
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-RUN npm install --only=development
+USER node
 
-COPY . .
+RUN npm install --registry https://registry.npm.taobao.org
 
-RUN npm run prebuild && npm run build
+COPY --chown=node:node . .
 
-FROM node:12.13-alpine AS production
-
-ARG NODE_ENV=production
-ENV NODE_ENV=${NODE_ENV}
-
-WORKDIR /usr/src/app
-
-COPY package*.json ./
-
-RUN npm install --only=production
-
-COPY . .
-
-COPY --from=development /usr/src/app/dist ./dist
+RUN npm run build
 
 EXPOSE 3000
 
-CMD ["sh", "-c", "npm run typeorm:migrate && npm run start:prod"]
+CMD ["sh", "-c", "npm run start:prod"]

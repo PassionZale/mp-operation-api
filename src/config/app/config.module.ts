@@ -8,7 +8,7 @@ import { AppConfigService } from './config.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: process.env.ENV_FILE_PATH || ".env",
+      ignoreEnvFile: process.env.NODE_ENV === 'production' ? true : false,
       load: [configuration],
       validationSchema: Joi.object({
         APP_ENV: Joi.string()
