@@ -1,19 +1,45 @@
-# api
+Dockerizing# api
 
-## 初始化
-
+## 本地运行
 ```bash
+# 1. 制作本地环境配置文件
 cp .env.sample .env
-```
 
-## 运行
-```bash
+# 2. 安装依赖
 npm install
 
+# 3. 运行项目
 npm run start:dev
 
-# 初始化数据库迁移
+# 4. 迁移数据库
 npm run typeorm:migrate
+```
+
+## Dockerizing
+```bash
+# 1. 进入跟目录
+cd api/
+
+# 2. 制作镜像
+docker build -t api .
+
+# 3. 运行容器
+docker run -itd -rm --name api -p 3000:3000 --env-file /usr/share/docker/api/.env api
+
+# 4. 依赖 mysql container?
+docker run -itd -rm --name api -p 3000:3000 --env-file /usr/share/docker/api/.env --link mysql57:mysql57 api
+
+# 4. 执行迁移
+docker exec -it api npm run typeorm:migrate
+```
+
+## 归档镜像
+```bash
+docker save api > api.tar
+
+docker load --input api.tar
+
+# TODO docker-compose
 ```
 
 ## 依赖说明
