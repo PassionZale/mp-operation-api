@@ -73,12 +73,12 @@ export const getAvatarMulterOptions = (): MulterOptions => {
       file: Express.Multer.File,
       cb: multerOptionsCallBack,
     ): void => {
-      if (file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
+      if (file.mimetype.match(/\/(jpg|jpeg|png|gif|svg)$/)) {
         cb(null, true);
       } else {
         cb(
           new ApiException(
-            '只能上传 jpg|jpeg|png|gif 类型的图片',
+            '只能上传 jpg|jpeg|png|gif|svg 类型的图片',
             ApiErrorCode.FILE_MIMETYPE_INVALID,
           ),
           false,
@@ -218,7 +218,7 @@ export const getPublicMulterOptions = (): MulterOptions => {
       file: Express.Multer.File,
       cb: multerOptionsCallBack,
     ): void => {
-      if(file.originalname.match(/\.(jpg|jpeg|png|gif|mp4|zip)$/i)) {
+      if(file.originalname.match(/\.(jpg|jpeg|png|gif|svg|mp4|zip)$/i)) {
         cb(null, true);
       } else {
         cb(

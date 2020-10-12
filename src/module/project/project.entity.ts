@@ -1,5 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { DateValueTransformer } from '@src/database/database.transformer';
+import {
+  DateValueTransformer,
+  MediaPathTransformer,
+} from '@src/database/database.transformer';
 import { UserEntity } from '@src/module/user/user.entity';
 
 @Entity('project')
@@ -16,7 +19,9 @@ export class ProjectEntity {
   desc: string;
 
   // 项目图标
-  @Column('varchar')
+  @Column('varchar', {
+    transformer: new MediaPathTransformer(),
+  })
   logo: string;
 
   // 创建者

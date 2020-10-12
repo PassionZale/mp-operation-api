@@ -18,3 +18,20 @@ export class DateValueTransformer implements ValueTransformer {
     return value;
   }
 }
+
+/**
+ * typeorm 媒体资源全路径转换
+ */
+export class MediaPathTransformer implements ValueTransformer {
+  from(value?: string): string {
+    if (value) {
+      return process.env.APP_URL ? `${process.env.APP_URL}/${value}` : value;
+    }
+
+    return value;
+  }
+
+  to(value?: string): string {
+    return value;
+  }
+}
