@@ -4,6 +4,7 @@ Dockerfile
 .dockerignore
 .vscode
 .git
+dist/
 
 .env
 ormconfig.json
