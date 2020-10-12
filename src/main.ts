@@ -24,10 +24,12 @@ moment.tz.setDefault('Asia/Shanghai');
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // 全局路由前缀
-  app.setGlobalPrefix('api');
+  // 全局路由前缀，暂时定义为 /v1
+  // 若部分 api 需要升级，GlobalPrefix 应该被移除
+  // 版本号应写在每个 Controller 注解中，例如：@Controller('v1/auth')
+  app.setGlobalPrefix('v1');
 
-  // avatar static serve
+  // avatar folder static serve
   app.use(
     '/media/avatar',
     serveStatic(path.join(__dirname, '../media/avatar/'), {
@@ -35,7 +37,7 @@ async function bootstrap() {
     }),
   );
 
-  // public static serve
+  // public folder static serve
   app.use(
     '/media/public',
     serveStatic(path.join(__dirname, '../media/public/'), {
@@ -62,17 +64,18 @@ async function bootstrap() {
 
   // TypeormConfig
   const typeormConfig: TypeormConfigService = app.get(TypeormConfigService);
+
   // AppConfig
   const appConfig: AppConfigService = app.get(AppConfigService);
 
   // 初始化 ormconfig.json
   updateOrmConfigFileSync(typeormConfig.configs);
 
-  // swagger
-  // TODO swagger 注解
-  if (appConfig.env === 'development') {
+  // Swagger Api Docs
+  // Emmm... 注解还没时间写
+  if (process.env.NODE_ENV === 'development') {
     const options = new DocumentBuilder()
-      .setTitle('Operator API')
+      .setTitle(`${appConfig.name}`)
       .setDescription('The Operator API description')
       .setVersion('1.0')
       .addTag('operator')
@@ -81,7 +84,12 @@ async function bootstrap() {
     SwaggerModule.setup('api/document', app, document);
   }
 
-  await app.listen(appConfig.port);
+  // 非开发模式，固定端口为 3000
+  // 此处的 3000 对应 Dockerfile 中 EXPOSE 的端口号，两者必须相同
+  // 请不要随意修改
+  await app.listen(
+    process.env.NODE_ENV === 'development' ? appConfig.port : 3000,
+  );
 }
 
 bootstrap();
