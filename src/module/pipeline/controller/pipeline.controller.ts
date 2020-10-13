@@ -33,6 +33,10 @@ import { UpdatePipeLineRequestDto } from '../dto/request/update-pipeline.request
 export class PipeLineController {
   constructor(private readonly pipeLineService: PipeLineService) {}
 
+  /**
+   * 获取流水线部署记录列表
+   * @param id 
+   */
   @Get('pipeline/:id/deploys')
   public async findPipeLineDeploys(
     @Param('id') id: number,
@@ -40,13 +44,16 @@ export class PipeLineController {
     return this.pipeLineService.findPipeLineDeploys(id);
   }
 
-  @Get('pipeline/:id/deploy')
+  /**
+   * 获取流水线最新的一条部署记录
+   * @param id 
+   */
+  @Get('pipeline/:id/latest/deploy')
   public async findPipeLineDeploy(
     @Param('id') id: number,
   ): Promise<PipeLineDeployLogEntity> {
-    return this.pipeLineService.findPipeLineDeploy(id);
+    return this.pipeLineService.findPipeLineLatestDeploy(id);
   }
-
 
   /**
    * 查询指定流水线

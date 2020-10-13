@@ -49,12 +49,15 @@ export class PipeLineService {
     return pipelines;
   }
 
-  public async updatePipeLine(id: number, dto: UpdatePipeLineRequestDto): Promise<boolean> {
+  public async updatePipeLine(
+    id: number,
+    dto: UpdatePipeLineRequestDto,
+  ): Promise<boolean> {
     const updated_at = (moment().format() as unknown) as Date;
 
     const pipeline = await this.findPipeLine(id);
 
-    if(!pipeline) throw new ApiException('流水线不存在');
+    if (!pipeline) throw new ApiException('流水线不存在');
 
     const updateResult: UpdateResult = await this.pipeLineRepository.update(
       id,
@@ -64,15 +67,17 @@ export class PipeLineService {
     return !!updateResult.affected;
   }
 
-  public async findPipeLineDeploy(
+  public async findPipeLineLatestDeploy(
     id: number,
   ): Promise<PipeLineDeployLogEntity> {
-    const deploys = this.pipeLineDeployLogRepository.findOne({
-      where: { pipeline_id: id },
-      order: { deployed_at: "DESC" }
-    });
+    const deploy = await this.pipeLineDeployLogRepository
+      .createQueryBuilder('pdl')
+      .leftJoinAndMapOne('pdl.user', 'user', 'u', 'u.id = pdl.user_id')
+      .where('pdl.pipeline_id = :id', { id })
+      .orderBy('pdl.deployed_at', 'DESC')
+      .getOne();
 
-    return deploys;
+    return deploy;
   }
 
   public async findPipeLineDeploys(
