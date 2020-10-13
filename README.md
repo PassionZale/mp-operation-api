@@ -24,10 +24,10 @@ cd api/
 docker build -t api .
 
 # 3. 运行容器
-docker run -itd -rm --name api -p 3000:3000 --env-file /usr/share/docker/api/.env api
+docker run -itd --rm --name api -p 3000:3000 --env-file /usr/share/docker/api/.env api
 
 # 4. 依赖 mysql container?
-docker run -itd -rm --name api -p 3000:3000 --env-file /usr/share/docker/api/.env --link mysql57:mysql57 api
+docker run -itd --rm --name api -p 3000:3000 --env-file /usr/share/docker/api/.env --link mysql57:mysql57 api
 
 # 4. 执行迁移
 docker exec -it api npm run typeorm:migrate
@@ -38,8 +38,15 @@ docker exec -it api npm run typeorm:migrate
 docker save api > api.tar
 
 docker load --input api.tar
+```
 
-# TODO docker-compose
+## DockerHub
+```bash
+docker login
+
+docker tag [IMAGE_ID] whouu/api:[TAG_NAME]
+
+docker push whouu/api:[TAG_NAME]
 ```
 
 ## 依赖说明
