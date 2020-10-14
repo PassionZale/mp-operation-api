@@ -70,6 +70,15 @@ export class ProjectController {
     return this.projectService.update(id, body);
   }
 
+  @Get('project/pipeline/tree')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Role(UserRole.DEVELOPER)
+  public async findProjectPipeLineTree(): Promise<ProjectEntity[]> {
+    const treeData = await this.projectService.findProjectPipeLineTree();
+    
+    return treeData;
+  }
+
   @Get('project/:id')
   @UseGuards(JwtAuthGuard, RoleGuard)
   @Role(UserRole.DEVELOPER)

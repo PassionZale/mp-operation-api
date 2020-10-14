@@ -31,9 +31,28 @@ export class ProjectService {
     return projects;
   }
 
-  public async update(id: number, dto: UpdateProjectRequestDto): Promise<boolean> {
-    const updateResult: UpdateResult = await this.projectRepository.update(id, dto);
+  public async update(
+    id: number,
+    dto: UpdateProjectRequestDto,
+  ): Promise<boolean> {
+    const updateResult: UpdateResult = await this.projectRepository.update(
+      id,
+      dto,
+    );
 
     return !!updateResult.affected;
+  }
+
+  public async findProjectPipeLineTree(): Promise<ProjectEntity[]> {
+    const projects = await this.projectRepository
+      .createQueryBuilder('p')
+      .leftJoinAndMapMany(
+        'p.pipelines',
+        'pipeline',
+        'pl',
+        'p.id = pl.project_id',
+      ).getMany();
+
+    return projects;
   }
 }

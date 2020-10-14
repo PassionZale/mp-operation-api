@@ -44,9 +44,9 @@ docker load --input api.tar
 ```bash
 docker login
 
-docker tag [IMAGE_ID] whouu/api:[TAG_NAME]
+docker tag [IMAGE_ID] api:[TAG_NAME]
 
-docker push whouu/api:[TAG_NAME]
+docker push api:[TAG_NAME]
 ```
 
 ## 依赖说明

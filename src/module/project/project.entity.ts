@@ -4,6 +4,7 @@ import {
   MediaPathTransformer,
 } from '@src/database/database.transformer';
 import { UserEntity } from '@src/module/user/user.entity';
+import { PipeLineEntity } from '../pipeline/entity/pipeline.entity';
 
 @Entity('project')
 export class ProjectEntity {
@@ -28,6 +29,9 @@ export class ProjectEntity {
   @Column('int')
   user_id: number;
   user?: UserEntity;
+
+  // 流水线集合
+  pipelines?: PipeLineEntity[];
 
   // 创建时间
   @Column('datetime', {
