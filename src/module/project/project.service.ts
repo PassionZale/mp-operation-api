@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult } from 'typeorm';
-import { PipeLineEntity } from '../pipeline/entity/pipeline.entity';
 import { CreateProjectRequestDto } from './dto/request/create-project.request.dto';
 import { UpdateProjectRequestDto } from './dto/request/update-project.request.dto';
 
@@ -47,23 +46,13 @@ export class ProjectService {
   public async findProjectPipeLineTree(): Promise<ProjectEntity[]> {
     const projects = await this.projectRepository
       .createQueryBuilder('project')
-      .select(['project.id', 'project.name', 'project.desc'])
+      .select(['project.id', 'project.name', 'project.desc', 'project.logo'])
       .leftJoinAndMapMany(
         'project.pipelines',
         'pipeline',
         'pipeline',
         'pipeline.project_id = project.id'
       )
-      // .leftJoinAndMapMany(
-      //   'project.pipelines',
-      //   qb => {
-      //     return qb
-      //       .select(['p.id', 'p.project_id', 'p.name', 'p.desc'])
-      //       .from(PipeLineEntity, 'p');
-      //   },
-      //   'pipelines',
-      //   'pipelines.`p_project_id` = project.id',
-      // )
       .getMany();
 
     return projects;
