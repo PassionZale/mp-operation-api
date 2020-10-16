@@ -33,6 +33,8 @@ docker run -itd --rm --name api -p 3000:3000 --env-file /usr/share/docker/api/.e
 docker exec -it api npm run typeorm:migrate
 ```
 
+echo "DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=https://??????.mirror.aliyuncs.com\"" | sudo tee -a /etc/default/docker
+
 ## 归档镜像
 ```bash
 docker save api > api.tar
@@ -44,9 +46,9 @@ docker load --input api.tar
 ```bash
 docker login
 
-docker tag [IMAGE_ID] api:[TAG_NAME]
+docker tag [IMAGE_ID] whouu/api:[TAG_NAME]
 
-docker push api:[TAG_NAME]
+docker push whouu/api:[TAG_NAME]
 ```
 
 ## 依赖说明
