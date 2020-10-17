@@ -12,6 +12,10 @@ export class PipeLineDeployLogEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
+  // 版本号
+  @Column()
+  version: string;
+
   // 描述
   @Column('text')
   desc: string;
