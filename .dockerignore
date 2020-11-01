@@ -5,6 +5,7 @@ Dockerfile
 .vscode
 .git
 dist/
+media/
 
 .env
 ormconfig.json
