@@ -8,6 +8,7 @@ import { TypeormConfigService } from './config.service';
 @Module({
   imports: [
     ConfigModule.forRoot({
+      ignoreEnvFile: process.env.NODE_ENV === 'production' ? true : false,
       load: [configuration],
       validationSchema: Joi.object({
         TYPEORM_TYPE: Joi.string()

@@ -70,9 +70,14 @@ export class ProjectController {
     return this.projectService.update(id, body);
   }
 
+  @Get('project/pipeline/tree')
+  public async findProjectPipeLineTree(): Promise<ProjectEntity[]> {
+    const treeData = await this.projectService.findProjectPipeLineTree();
+    
+    return treeData;
+  }
+
   @Get('project/:id')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @Role(UserRole.DEVELOPER)
   public async findOne(@Param() id: number): Promise<ProjectEntity> {
     const project = await this.projectService.findOne(id);
 
@@ -82,8 +87,6 @@ export class ProjectController {
   }
 
   @Get('projects')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @Role(UserRole.DEVELOPER)
   public async findAll(): Promise<ProjectEntity[]> {
     const projects = await this.projectService.findAll();
 

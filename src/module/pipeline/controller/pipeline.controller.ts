@@ -8,6 +8,8 @@ import {
   UseInterceptors,
   UploadedFile,
   ClassSerializerInterceptor,
+  Query,
+  Put,
 } from '@nestjs/common';
 import { PipeLineService } from '../service/pipeline.service';
 import { PipeLineEntity } from '../entity/pipeline.entity';
@@ -23,17 +25,34 @@ import { ApiException } from '@src/filter/api-exception.filter';
 import { removeForwardSlash } from '@src/common/helper/path.helper';
 import { desensitization } from '@src/common/helper/sensitive.helper';
 import { PipeLineDeployLogEntity } from '../entity/pipeline-deploy-log.entity';
+import { SelectPipeLineRequestDto } from '../dto/request/select-pipelines.request.dot';
+import { UpdatePipeLineRequestDto } from '../dto/request/update-pipeline.request.dto';
 
 @Controller()
 @UseInterceptors(ClassSerializerInterceptor)
 export class PipeLineController {
   constructor(private readonly pipeLineService: PipeLineService) {}
 
+  /**
+   * 获取流水线部署记录列表
+   * @param id 
+   */
   @Get('pipeline/:id/deploys')
   public async findPipeLineDeploys(
     @Param('id') id: number,
   ): Promise<PipeLineDeployLogEntity[]> {
     return this.pipeLineService.findPipeLineDeploys(id);
+  }
+
+  /**
+   * 获取流水线最新的一条部署记录
+   * @param id 
+   */
+  @Get('pipeline/:id/latest/deploy')
+  public async findPipeLineDeploy(
+    @Param('id') id: number,
+  ): Promise<PipeLineDeployLogEntity> {
+    return this.pipeLineService.findPipeLineLatestDeploy(id);
   }
 
   /**
@@ -49,8 +68,10 @@ export class PipeLineController {
    * 查询流水线列表
    */
   @Get('pipelines')
-  public async findPipeLines(): Promise<PipeLineEntity[]> {
-    return this.pipeLineService.findPipeLines();
+  public async findPipeLines( @Query() query: SelectPipeLineRequestDto,
+     ): Promise<PipeLineEntity[]> {
+    console.log(query);
+    return this.pipeLineService.findPipeLines(query);
   }
 
   /**
@@ -76,6 +97,22 @@ export class PipeLineController {
     pipeLine.private_key = desensitization(private_key);
 
     return pipeLine;
+  }
+
+  /**
+   * 修改流水线
+   * @param created_by
+   * @param body
+   */
+  @Put('pipeline/:id')
+  @UseGuards(JwtAuthGuard, RoleGuard)
+  @Role(UserRole.ADMIN)
+  public async updatePipeLine(
+    @RequestUser('id') user_id: number,
+    @Param('id') id: number,
+    @Body() body: UpdatePipeLineRequestDto,
+  ): Promise<boolean> {
+    return this.pipeLineService.updatePipeLine(id, { ...body, user_id });
   }
 
   /**

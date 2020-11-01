@@ -1,5 +1,8 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { DateValueTransformer } from '@src/database/database.transformer';
+import {
+  DateValueTransformer,
+  MediaPathTransformer,
+} from '@src/database/database.transformer';
 import { UserRole } from '@src/common/enum/user-role.enum';
 import { UserSex } from '@src/common/enum/user-sex.enum';
 import { UserStatus } from '@src/common/enum/user-status.enum';
@@ -10,7 +13,10 @@ export class UserEntity {
   id: number;
 
   // 头像
-  @Column('varchar', { nullable: true })
+  @Column('varchar', {
+    nullable: true,
+    transformer: new MediaPathTransformer(),
+  })
   avatar: string;
 
   // 昵称：花名

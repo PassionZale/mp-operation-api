@@ -1,6 +1,9 @@
 import { IsNotEmpty, IsOptional } from 'class-validator';
 
 export class UpdateDeployLogRequestDto {
+  @IsNotEmpty({ message: '版本号不能为空' })
+  readonly version: string;
+
   @IsNotEmpty({ message: '描述不能为空' })
   readonly desc: string;
 

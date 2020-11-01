@@ -26,6 +26,10 @@ export class PipeLineEntity {
   @Column('varchar', { length: 100 })
   appid: string;
 
+  // 项目描述
+  @Column('text')
+  desc: string;
+
   // 项目类型
   @Column('enum', {
     enum: [
