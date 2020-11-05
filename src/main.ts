@@ -84,6 +84,11 @@ async function bootstrap() {
     SwaggerModule.setup('api/document', app, document);
   }
 
+  app.enableCors({
+    origin: /lovchun\.com$/,
+    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
+  })
+
   // 非开发模式，固定端口为 3000
   // 此处的 3000 对应 Dockerfile 中 EXPOSE 的端口号，两者必须相同
   // 请不要随意修改

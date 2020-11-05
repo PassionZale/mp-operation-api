@@ -1,16 +1,18 @@
 FROM node:12.13-alpine
 
-RUN mkdir -p /usr/src/app/node_modules && chown -R node:node /usr/src/app
+RUN \
+mkdir -p /usr/src/app/node_modules && \
+mkdir -p /usr/src/app/media
 
 WORKDIR /usr/src/app
 
 COPY package*.json ./
 
-USER node
+VOLUME ["/usr/src/app/media"]
 
 RUN npm install --registry https://registry.npm.taobao.org
 
-COPY --chown=node:node . .
+COPY . .
 
 RUN npm run build
 
