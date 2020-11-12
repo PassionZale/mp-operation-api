@@ -86,6 +86,7 @@ async function bootstrap() {
 
   app.enableCors({
     origin: /lovchun\.com$/,
+    exposedHeaders: ['Content-Disposition'],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE']
   })
 

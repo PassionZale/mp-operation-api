@@ -2,6 +2,7 @@ import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
 import { DateValueTransformer } from '@src/database/database.transformer';
 import { UserEntity } from '@src/module/user/user.entity';
 import { PipeLineEntity } from './pipeline.entity';
+import { ProjectEntity } from '@src/module/project/project.entity';
 
 /**
  * 流水线部署记录
@@ -23,6 +24,8 @@ export class PipeLineDeployLogEntity {
   // 项目路径
   @Column()
   project_path: string;
+
+  project?: ProjectEntity;
 
   // 流水线 ID
   @Column()

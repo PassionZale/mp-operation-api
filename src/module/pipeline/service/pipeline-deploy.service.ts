@@ -33,6 +33,12 @@ export class PipeLineDeployService {
         'p',
         'p.id = pipeline_deploy_log.pipeline_id',
       )
+      .leftJoinAndMapOne(
+        'pipeline_deploy_log.project',
+        'project',
+        'project',
+        'project.id = p.project_id',
+      )
       .where('pipeline_deploy_log.id = :id', { id })
       .getOne();
 
