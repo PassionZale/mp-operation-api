@@ -82,8 +82,6 @@ export class PipeLineDeployController {
    * @param id
    */
   @Get('pipeline-deploy/:id')
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @Role(UserRole.DEVELOPER)
   public async findPipeLineDeploy(
     @Param('id') id: string,
   ): Promise<PipeLineDeployLogEntity> {
