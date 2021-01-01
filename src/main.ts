@@ -72,7 +72,6 @@ async function bootstrap() {
   updateOrmConfigFileSync(typeormConfig.configs);
 
   // Swagger Api Docs
-  // Emmm... 注解还没时间写
   if (process.env.NODE_ENV === 'development') {
     const options = new DocumentBuilder()
       .setTitle(`${appConfig.name}`)

@@ -49,6 +49,20 @@ export class PipeLineService {
     return pipelines;
   }
 
+  public async findPipelinesAndDeploy(project_id: number): Promise<PipeLineEntity[]> {
+    const db = this.pipeLineRepository.createQueryBuilder('p');
+
+    db.where('p.project_id = :project_id', { project_id })
+      .leftJoinAndMapOne('p.deploy', 'pipeline_deploy_log', 'pd', 'pd.pipeline_id = p.id')
+      .orderBy('pd.deployed_at', 'DESC')
+      .leftJoinAndMapOne('pd.user', 'user', 'u', 'u.id = pd.user_id')
+      .getOne()
+
+    const pipelines = await db.getMany();
+
+    return pipelines;
+  }
+
   public async updatePipeLine(
     id: number,
     dto: UpdatePipeLineRequestDto,

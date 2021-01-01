@@ -9,6 +9,7 @@ import {
 import { desensitization } from '@src/common/helper/sensitive.helper';
 import { UserEntity } from '@src/module/user/user.entity';
 import { ProjectEntity } from '@src/module/project/project.entity';
+import { PipeLineDeployLogEntity } from './pipeline-deploy-log.entity';
 
 /**
  * 流水线
@@ -63,6 +64,12 @@ export class PipeLineEntity {
   @Column('int')
   user_id: number;
   user?: UserEntity;
+
+  // 最新的部署记录
+  deploy?: PipeLineDeployLogEntity;
+
+  // 部署记录列表
+  deploys?: PipeLineDeployLogEntity[];
 
   // 创建时间
   @Column('datetime', {
