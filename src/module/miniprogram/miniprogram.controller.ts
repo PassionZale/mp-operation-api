@@ -2,14 +2,12 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { ProjectService } from '../project/project.service';
 import { PipeLineService } from '../pipeline/service/pipeline.service';
 import { ProjectEntity } from '../project/project.entity';
-import { PipeLineDeployService } from '../pipeline/service/pipeline-deploy.service';
 
 @Controller()
 export class MiniProgramController {
   constructor(
     private readonly projectService: ProjectService,
     private readonly pipelineService: PipeLineService,
-    private readonly pipelineDeployService: PipeLineDeployService
   ) {}
 
   @Get('miniprogram/:id')

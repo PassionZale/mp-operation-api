@@ -37,6 +37,13 @@ async function bootstrap() {
     }),
   );
 
+  app.use(
+    '/media/pipeline',
+    serveStatic(path.join(__dirname, '../media/pipeline/'), {
+      maxAge: '1d',
+    }),
+  );
+
   // public folder static serve
   app.use(
     '/media/public',
