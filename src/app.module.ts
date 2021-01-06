@@ -13,6 +13,7 @@ import { UserModule } from './module/user/user.module';
 import { AuthModule } from './module/auth/auth.module';
 import { ProjectModule } from './module/project/project.module';
 import { PipeLineModule } from './module/pipeline/pipeline.module';
+import { MiniProgramModule } from './module/miniprogram/miniprogram.module';
 
 @Module({
   imports: [
@@ -25,7 +26,8 @@ import { PipeLineModule } from './module/pipeline/pipeline.module';
     UserModule,
     AuthModule,
     ProjectModule,
-    PipeLineModule
+    PipeLineModule,
+    MiniProgramModule
   ],
   controllers: [],
   providers: [],

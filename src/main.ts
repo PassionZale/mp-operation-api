@@ -37,6 +37,13 @@ async function bootstrap() {
     }),
   );
 
+  app.use(
+    '/media/pipeline',
+    serveStatic(path.join(__dirname, '../media/pipeline/'), {
+      maxAge: '1d',
+    }),
+  );
+
   // public folder static serve
   app.use(
     '/media/public',
@@ -72,7 +79,6 @@ async function bootstrap() {
   updateOrmConfigFileSync(typeormConfig.configs);
 
   // Swagger Api Docs
-  // Emmm... 注解还没时间写
   if (process.env.NODE_ENV === 'development') {
     const options = new DocumentBuilder()
       .setTitle(`${appConfig.name}`)

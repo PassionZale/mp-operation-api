@@ -49,6 +49,45 @@ export class PipeLineService {
     return pipelines;
   }
 
+  public async findPipelinesAndDeploy(
+    project_id: number,
+  ): Promise<PipeLineEntity[]> {
+    const db = this.pipeLineRepository.createQueryBuilder('p');
+
+    db.where('p.project_id = :project_id', { project_id })
+      .leftJoinAndMapOne(
+        'p.deploy',
+        'pipeline_deploy_log',
+        'pd',
+        'pd.pipeline_id = p.id',
+      )
+      .leftJoinAndMapOne('pd.user', 'user', 'u', 'u.id = pd.user_id')
+      .orderBy('pd.deployed_at', 'DESC')
+      .getOne();
+
+    // leftJoinAndMapOne 子查询，无法映射 entity 中的 property，因此下方写法无效
+    // https://github.com/typeorm/typeorm/issues/5637#issuecomment-699726742
+    // db.where('p.project_id = :project_id', { project_id })
+    //   .leftJoinAndMapOne(
+    //     'p.deploy',
+    //     subQuery => {
+    //       return subQuery
+    //         .select()
+    //         .from(PipeLineDeployLogEntity, 'pd')
+    //         .orderBy({'pd.deployed_at': 'DESC'});
+    //     },
+    //     'pd',
+    //     'pd.pipeline_id = p.id',
+    //   )
+    //   .orderBy('p.id', 'ASC')
+    //   .getOne();
+
+    const pipelines = await db.getMany();
+
+    // 由于上面的 BUG ，查询完毕后，手动按照 p.id 进行 ASC 排序
+    return pipelines.sort((a, b) => a.id - b.id);
+  }
+
   public async updatePipeLine(
     id: number,
     dto: UpdatePipeLineRequestDto,
