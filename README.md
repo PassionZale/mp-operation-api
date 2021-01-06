@@ -1,4 +1,6 @@
-Dockerizing# api
+# MP-OPERATION-API
+
+小程序运营 API Server
 
 ## 本地运行
 ```bash
@@ -6,7 +8,7 @@ Dockerizing# api
 cp .env.sample .env
 
 # 2. 安装依赖
-npm install
+npm ci
 
 # 3. 运行项目
 npm run start:dev
@@ -15,42 +17,32 @@ npm run start:dev
 npm run typeorm:migrate
 ```
 
-## Dockerizing
+## 容器运行
 ```bash
 # 1. 进入跟目录
-cd api/
+cd mp-operation-api/
 
 # 2. 制作镜像
 docker build -t api .
 
 # 3. 运行容器
-docker run -itd --rm --name api -p 3000:3000 --env-file /usr/share/docker/api/.env api
-
-# 4. 依赖 mysql container?
-docker run -itd --rm --name api -p 3000:3000 --env-file /usr/share/docker/api/.env --link mysql57:mysql57 api
+docker run -itd --name api -p 3000:3000 api
 
 # 4. 执行迁移
 docker exec -it api npm run typeorm:migrate
 ```
 
-echo "DOCKER_OPTS=\"\$DOCKER_OPTS --registry-mirror=https://??????.mirror.aliyuncs.com\"" | sudo tee -a /etc/default/docker
-
-## 归档镜像
+## 生产部署
 ```bash
-docker save api > api.tar
-
-docker load --input api.tar
+docker run 
+  -itd \
+  --name api \
+  -p 3000:3000 \
+  -v ${YOUR_VOLUME_DIR_PATH}:/usr/src/app/media \
+  --env-file ${YOUR_PRODUCTION_ENV_FILE_PATH} \
+  --link mysql:mysql \ # 如果依赖 database container
+  api
 ```
-
-## DockerHub
-```bash
-docker login
-
-docker tag [IMAGE_ID] whouu/api:[TAG_NAME]
-
-docker push whouu/api:[TAG_NAME]
-```
-
 ## 依赖说明
 
 ### CONFIG

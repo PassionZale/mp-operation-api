@@ -10,7 +10,7 @@ COPY package*.json ./
 
 VOLUME ["/usr/src/app/media"]
 
-RUN npm install --registry https://registry.npm.taobao.org
+RUN npm ci --registry https://registry.npm.taobao.org
 
 COPY . .
 
