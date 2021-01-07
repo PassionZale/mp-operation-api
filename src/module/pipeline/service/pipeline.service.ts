@@ -88,6 +88,32 @@ export class PipeLineService {
     return pipelines.sort((a, b) => a.id - b.id);
   }
 
+  public async findPipelineDeloyLogs(project_id: number, pipeline_id: number): Promise<PipeLineEntity> {
+    const db = this.pipeLineRepository.createQueryBuilder('pp');
+
+    db.where('pp.id = :pipeline_id', { pipeline_id })
+      .andWhere('pp.project_id = :project_id', { project_id })
+      .leftJoinAndMapOne(
+        'pp.project',
+        'project',
+        'p',
+        'pp.project_id = p.id'
+      )
+      .leftJoinAndMapMany(
+        'pp.deploys',
+        'pipeline_deploy_log',
+        'pd',
+        'pd.pipeline_id = pp.id'
+      )
+      .leftJoinAndMapOne('pd.user', 'user', 'u', 'u.id = pd.user_id')
+      .orderBy('pd.deployed_at', 'DESC')
+      .getMany()
+
+    const pipeline = await db.getOne()
+
+    return pipeline
+  }
+
   public async updatePipeLine(
     id: number,
     dto: UpdatePipeLineRequestDto,
