@@ -9,6 +9,8 @@ media/
 
 .env
 ormconfig.json
+*.zip
+*.tar
 
 logs/
 npm-debug.log
